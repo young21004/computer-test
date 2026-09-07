@@ -1,0 +1,1064 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026년 컴퓨터활용능력 2급 기출문제 CBT</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+       /* 암호 잠금 화면 스타일 */
+        #auth-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .auth-box {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+            text-align: center;
+        }
+        .auth-box input {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            margin-right: 10px;
+            width: 200px;
+        }
+        .auth-box button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .auth-box button:hover {
+            background-color: #2c5282;
+        }
+
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #2b6cb0;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .header h1 {
+            color: #1a365d;
+            font-size: 24px;
+            margin: 0 0 10px 0;
+        }
+        .subject-title {
+            background-color: #2b6cb0;
+            color: white;
+            padding: 10px 15px;
+            font-size: 18px;
+            font-weight: bold;
+            border-radius: 6px;
+            margin-top: 30px;
+            margin-bottom: 20px;
+        }
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .question-title {
+            font-weight: bold;
+            font-size: 15px;
+            color: #2d3748;
+            margin-bottom: 12px;
+        }
+        .options {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        .options li {
+            padding: 8px 12px;
+            margin-bottom: 6px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+        .options li:hover {
+            background-color: #edf2f7;
+        }
+
+        /* 메인 컨텐츠 (암호 통과 전까지 숨김) */
+        #main-content {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        h1 { text-align: center; color: #1a365d; border-bottom: 3px solid #2b6cb0; padding-bottom: 15px; }
+        .section-title { background-color: #2b6cb0; color: white; padding: 10px 15px; border-radius: 5px; margin-top: 30px; font-size: 1.2rem; }
+        .question-card { border: 1px solid #e2e8f0; border-radius: 8px; padding: 20px; margin-top: 20px; background-color: #fafafa; }
+        .question-text { font-weight: bold; font-size: 1.05rem; margin-bottom: 15px; line-height: 1.5; }
+        .options { display: flex; flex-direction: column; gap: 10px; }
+        .option-label { display: flex; align-items: center; padding: 10px; background-color: #fff; border: 1px solid #cbd5e0; border-radius: 5px; cursor: pointer; }
+        .option-label:hover { background-color: #ebf8ff; }
+        .option-label input { margin-right: 12px; }
+        .result-message { margin-top: 15px; font-weight: bold; padding: 10px; border-radius: 5px; display: none; }
+        .result-message.correct { display: block; background-color: #c6f6d5; color: #22543d; }
+        .result-message.incorrect { display: block; background-color: #fed7d7; color: #742a2a; }
+        .btn-explain { margin-top: 15px; padding: 8px 16px; background-color: #4a5568; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .explanation { display: none; margin-top: 10px; padding: 15px; background-color: #edf2f7; border-left: 4px solid #4299e1; font-size: 0.95rem; line-height: 1.6; }
+    </style>
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+
+<!-- 암호 입력 레이어 -->
+<div id="auth-overlay">
+    <div class="auth-box">
+        <h2>🔒 접근 비밀번호 입력</h2>
+        <p>시험지에 접근하기 위한 암호를 입력하세요.</p>
+        <input type="password" id="access-key" placeholder="비밀번호" onkeydown="if(event.key==='Enter') checkPassword()">
+        <button onclick="checkPassword()">확인</button>
+        <p id="auth-error" style="color:red; display:none; margin-top:10px;">비밀번호가 올바르지 않습니다.</p>
+    </div>
+</div>
+
+<!-- 문제 풀이 영역 -->
+<div id="main-content">
+    <h1>2026년 컴퓨터활용능력 2급 기출문제 Ⅲ</h1>
+	
+	<div class="section-title">제1과목 컴퓨터 일반</div>
+
+	<div class="question-card" id="q1">
+		<div class="question-text">
+		1. 다음 중 한글 Windows 10에서 작업 표시줄의 바로 가기 메뉴에서 설정할 수 있는 항목으로 옳지 않은 것은?
+		</div>
+		<div class="options">
+			<label class="option-label"><input type="radio" name="q1" onclick="checkAnswer('q1', 1, 4)">계단식 창 배열</label>
+			<label class="option-label"><input type="radio" name="q1" onclick="checkAnswer('q1', 2, 4)">창 가로 정렬 보기</label>
+			<label class="option-label"><input type="radio" name="q1" onclick="checkAnswer('q1', 3, 4)">모든 작업 표시줄 잠금</label>
+			<label class="option-label"><input type="radio" name="q1" onclick="checkAnswer('q1', 4, 4)">아이콘 자동 정렬</label>
+		</div>
+		<div class="result-message" id="q1-result"></div>
+			<button class="btn-explain" onclick="toggleExplain('q1-explain')">설명보기</button>
+		<div class="explanation" id="q1-explain">
+			<strong>[해설]</strong><br>
+			<ul>
+				<li>아이콘 자동 정렬은 바탕 화면의 바로 가기 메뉴 중 [보기]의 하위 메뉴입니다.</li>
+			</ul>
+		</div>
+	</div>
+	
+	<div class="question-card" id="q2">
+    <div class="question-text">
+    2. 다음 중 한글 Windows 10의 [폴더 옵션]에서 설정할 수 있는 작업에 해당되지 않는 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q2" onclick="checkAnswer('q2', 1, 3)">숨김 파일 및 폴더를 표시할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q2" onclick="checkAnswer('q2', 2, 3)">색인된 위치에서는 파일 이름 뿐만 아니라 내용도 검색하도록 설정할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q2" onclick="checkAnswer('q2', 3, 3)">숨긴 파일 및 폴더의 숨김 속성을 일괄 해제할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q2" onclick="checkAnswer('q2', 4, 3)">파일이나 폴더를 한 번 클릭해서 열 것인지, 두 번 클릭해서 열 것인지를 설정할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q2-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q2-explain')">설명보기</button>
+    <div class="explanation" id="q2-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>폴더 옵션의 ‘숨김 파일, 폴더 및 드라이브 표시’는 단순히 숨김 속성이 지정된 폴 더/파일을 보이도록 하는 것 뿐입니다. 숨김 폴더/파일의 숨김 속성을 해제하려면 해당 폴더/파일의 속성 대화상자에서 ‘숨김’의 체크를 해제해야 합니다.</li>
+		</ul>
+    </div>
+</div>
+
+<div class="question-card" id="q3">
+    <div class="question-text">
+    3. 다음 중 파일이나 폴더를 복사하거나 이동하는 방법으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q3" onclick="checkAnswer('q3', 1, 4)">폴더를 마우스로 선택한 후 동일한 드라이브의 다른 폴더로 끌어서 놓으면 이동이 된다.</label>
+        <label class="option-label"><input type="radio" name="q3" onclick="checkAnswer('q3', 2, 4)">USB에 저장되어 있는 파일을 마우스로 선택한 후 바탕 화면으로 끌어서 놓으면 복사가 된다.</label>
+        <label class="option-label"><input type="radio" name="q3" onclick="checkAnswer('q3', 3, 4)">파일을 마우스로 선택한 후 [Ctrl]을 누른 채 같은 드라이브의 다른 폴더로 끌어서 놓으면 복사가 된다.</label>
+        <label class="option-label"><input type="radio" name="q3" onclick="checkAnswer('q3', 4, 4)">폴더를 마우스로 선택한 후 [Alt]를 누른 채 같은 드라이브의 다른 폴더로 끌어서 놓으면 이동이 된다.</label>
+    </div>
+    <div class="result-message" id="q3-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q3-explain')">설명보기</button>
+    <div class="explanation" id="q3-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>폴더를 마우스로 선택한 후 [Alt]를 누른 채 같은 드라이브의 다른 폴더로 끌어서 놓으면 폴더의 바로 가기 아이콘이 생성됩니다.</li>
+		</ul>
+    </div>
+</div> 
+
+<div class="question-card" id="q4">
+    <div class="question-text">
+    4. 다음 중 한글 Windows 10의 인쇄 기능에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q4" onclick="checkAnswer('q4', 1, 4)">기본 프린터란 인쇄 시 특정 프린터를 지정하지 않아도 자동으로 인쇄되는 프린터를 말한다.</label>
+        <label class="option-label"><input type="radio" name="q4" onclick="checkAnswer('q4', 2, 4)">프린터 속성 창에서 공급용지의 종류, 공유, 포트 등을 설정할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q4" onclick="checkAnswer('q4', 3, 4)">인쇄 대기 중인 작업은 취소시킬 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q4" onclick="checkAnswer('q4', 4, 4)">인쇄 중인 작업은 취소할 수는 없으나 잠시 중단시킬 수 있다.</label>
+    </div>
+    <div class="result-message" id="q4-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q4-explain')">설명보기</button>
+    <div class="explanation" id="q4-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>인쇄 중인 작업도 인쇄를 취소하거나 잠시 중단시킬 수 있습니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q5">
+    <div class="question-text">
+    5. 다음 중 기억장치의 기억 용량 단위로 가장 큰 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q5" onclick="checkAnswer('q5', 1, 1)">1TB</label>
+        <label class="option-label"><input type="radio" name="q5" onclick="checkAnswer('q5', 2, 1)">1KB</label>
+        <label class="option-label"><input type="radio" name="q5" onclick="checkAnswer('q5', 3, 1)">1GB</label>
+        <label class="option-label"><input type="radio" name="q5" onclick="checkAnswer('q5', 4, 1)">1MB</label>
+    </div>
+    <div class="result-message" id="q5-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q5-explain')">설명보기</button>
+    <div class="explanation" id="q5-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>문제의 보기 중 기억 용량 단위가 가장 큰 것은 1TB입니다. 기억 용량의 단위를 작은 것부터 큰 것까지 차례대로 나열하면<br> Byte < KB < MB < GB < TB < PB < EB 순입니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q6">
+    <div class="question-text">
+    6. 다음 중 컴퓨터의 기억장치에 관한 설명으로 옳은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q6" onclick="checkAnswer('q6', 1, 1)">캐시 메모리 : CPU와 주기억장치 사이에서 컴퓨터의 처리 속도를 향상 시키기 위한 것</label>
+        <label class="option-label"><input type="radio" name="q6" onclick="checkAnswer('q6', 2, 1)">가상 메모리 : 주기억장치에 저장된 정보에 접근할 때 주소 대신 기억된 정보의 내용의 일부를 이용하여 직접 접근하는 장치</label>
+        <label class="option-label"><input type="radio" name="q6" onclick="checkAnswer('q6', 3, 1)">연관 메모리 : 보조기억장치의 일부를 주기억장치처럼 사용하는 메모리 관리 기법</label>
+        <label class="option-label"><input type="radio" name="q6" onclick="checkAnswer('q6', 4, 1)">버퍼 메모리 : EEPROM의 일종으로, 전력 소모가 적고, 데이터 전송 속도가 빠른 비휘발성 메모리</label>
+    </div>
+    <div class="result-message" id="q6-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q6-explain')">설명보기</button>
+    <div class="explanation" id="q6-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>②번은 연상(연관) 메모리(Associative Memory), ③번은 가상 메모리(Virtual Memory), ④번은 플래시 메모리(Flash Memory)에 대한 설명입니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q7">
+    <div class="question-text">
+    7. 다음 중 컴퓨터의 롬(ROM)에 기록되어 하드웨어를 제어하며, 하드웨어의 성능 향상을 위해 업그레이드 할 수 있는 마이크로프로그램의 집합을 의미하는 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q7" onclick="checkAnswer('q7', 1, 4)">프리웨어(Freeware)</label>
+        <label class="option-label"><input type="radio" name="q7" onclick="checkAnswer('q7', 2, 4)">셰어웨어(Shareware)</label>
+        <label class="option-label"><input type="radio" name="q7" onclick="checkAnswer('q7', 3, 4)">미들웨어(Middleware)</label>
+        <label class="option-label"><input type="radio" name="q7" onclick="checkAnswer('q7', 4, 4)">펌웨어(Firmware)</label>
+    </div>
+    <div class="result-message" id="q7-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q7-explain')">설명보기</button>
+    <div class="explanation" id="q7-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>주로 ROM에 반영구적으로 저장되어 하드웨어를 제어(관리)하는 역할을 수행하는 것을 펌웨어(Firmware)라고 합니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q8">
+    <div class="question-text">
+    8. 다음 중 컴퓨터 시스템에서 사용하는 채널(Channel)에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q8" onclick="checkAnswer('q8', 1, 3)">주변장치에 대한 제어 권한을 CPU로 부터 넘겨받아 CPU 대신 입출력을 관리한다.</label>
+        <label class="option-label"><input type="radio" name="q8" onclick="checkAnswer('q8', 2, 3)">입출력 작업이 끝나면 CPU에게 인터럽트 신호를 보낸다.</label>
+        <label class="option-label"><input type="radio" name="q8" onclick="checkAnswer('q8', 3, 3)">CPU와 주기억장치의 속도 차이를 해결하기 위하여 사용된다.</label>
+        <label class="option-label"><input type="radio" name="q8" onclick="checkAnswer('q8', 4, 3)">채널에는 셀렉터(Selector), 멀티플랙서(Multiplexer), 블록 멀티플랙서(Block Multiplexer) 등이 있다.</label>
+    </div>
+    <div class="result-message" id="q8-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q8-explain')">설명보기</button>
+    <div class="explanation" id="q8-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>채널은 CPU와 입·출력장치 사이의 속도 차이를 해결하기 위해 사용됩니다. CPU 와 주기억장치의 속도 차이를 해결하기 위해 사용되는 것은 캐시 메모리입니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q9">
+    <div class="question-text">
+    9. 다음 중 하드디스크 용량이 부족할 경우의 해결 방법으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q9" onclick="checkAnswer('q9', 1, 1)">USB 파일 정리</label>
+        <label class="option-label"><input type="radio" name="q9" onclick="checkAnswer('q9', 2, 1)">휴지통 파일 정리</label>
+        <label class="option-label"><input type="radio" name="q9" onclick="checkAnswer('q9', 3, 1)">디스크 정리 수행</label>
+        <label class="option-label"><input type="radio" name="q9" onclick="checkAnswer('q9', 4, 1)">Windows 기능 제거</label>
+    </div>
+    <div class="result-message" id="q9-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q9-explain')">설명보기</button>
+    <div class="explanation" id="q9-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>USB 파일을 정리한다고 해서 하드디스크의 용량이 증가하지는 않습니다. 하드디 스크의 파일을 USB로 백업한 후 하드디스크의 파일을 삭제해야 하드디스크의 용 량이 증가됩니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q10">
+    <div class="question-text">
+    10. 다음 중 데이터가 발생되는 즉시 처리되어 결과를 바로 확인할 수 있는 시스템으로, 은행이나 여행사의 좌석 예약 조회 서비스 등에 이용되는 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q10" onclick="checkAnswer('q10', 1, 1)">실시간 처리 시스템</label>
+        <label class="option-label"><input type="radio" name="q10" onclick="checkAnswer('q10', 2, 1)">일괄 처리 시스템</label>
+        <label class="option-label"><input type="radio" name="q10" onclick="checkAnswer('q10', 3, 1)">분산 처리 시스템</label>
+        <label class="option-label"><input type="radio" name="q10" onclick="checkAnswer('q10', 4, 1)">시분할 시스템</label>
+    </div>
+    <div class="result-message" id="q10-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q10-explain')">설명보기</button>
+    <div class="explanation" id="q10-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>데이터 발생 즉시, 또는 데이터 처리 요구가 있는 즉시 처리하여 결과를 산출하는 방식을 사용하는 것은 실시간 처리 시스템입니다.</li>
+			<li>일괄 처리 시스템 : 발생된 자료를 일정 기간 모아 두었다가 한꺼번에 처리하는 방식</li>
+			<li>시분할 시스템 : 한 CPU를 여러 사용자가 사용하는 경우 사용권을 일정 시간 동안 할당하여 혼자 독점하여 사용하는 것처럼 하는 기법</li>
+			<li>분산 처리 시스템 : 각 지역별로 발생된 자료를 분산 처리하는 방식, 시스템의 과부하를 방지할 수 있으며 시스템의 안전성, 유연성, 신뢰성, 확장성 등에서 유리함.클라이언트/서버 시스템 등이 있음</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q11">
+    <div class="question-text">
+    11. 다음 중 웹 브라우저의 기능에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q11" onclick="checkAnswer('q11', 1, 1)">인터넷 옵션에서 멀티미디어 편집기를 선택할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q11" onclick="checkAnswer('q11', 2, 1)">전자우편을 보내거나 FTP 서버에 접속할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q11" onclick="checkAnswer('q11', 3, 1)">웹 페이지를 사용자 컴퓨터에 저장하거나 인쇄할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q11" onclick="checkAnswer('q11', 4, 1)">자주 방문하는 웹 사이트 주소를 관리할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q11-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q11-explain')">설명보기</button>
+    <div class="explanation" id="q11-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>‘인터넷 옵션’에 멀티미디어 편집기를 선택할 수 있는 메뉴는 없습니다.</li>
+		</ul>
+    </div>
+</div> 
+
+<div class="question-card" id="q12">
+    <div class="question-text">
+    12. 다음의 장치 중에서 자료가 전송될 최적의 길을 찾아주는 역할을 하며, 네트워크 내의 정보가 다른 네트워크에서도 충분히 읽히도록 해주는 장치는?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q12" onclick="checkAnswer('q12', 1, 3)">리피터(Repeater)</label>
+        <label class="option-label"><input type="radio" name="q12" onclick="checkAnswer('q12', 2, 3)">허브(Hub)</label>
+        <label class="option-label"><input type="radio" name="q12" onclick="checkAnswer('q12', 3, 3)">라우터(Router)</label>
+        <label class="option-label"><input type="radio" name="q12" onclick="checkAnswer('q12', 4, 3)">LAN 카드</label>
+    </div>
+    <div class="result-message" id="q12-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q12-explain')">설명보기</button>
+    <div class="explanation" id="q12-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>인터넷에 접속할 때 반드시 필요한 장비로, 최적의 경로를 설정하여 전송하는 네트 워크 장비는 라우터(Router)입니다.</li>
+			<li>리피터(Repeater) : 거리가 증가할수록 감쇠하는 디지털 신호의 장거리 전송을 위해서 수신한 신호를 새로 재생시키거나 출력 전압을 높여 전송하는 장치</li>
+			<li>허브(Hub) : 네트워크에서 연결된 각 회선이 모이는 집선장치로서 각 회선을 통합적으로 관리하는 방식</li>
+			<li>LAN 카드<br>물리적으로 네트워크에 접속하기 위해 컴퓨터 내에 설치하는 확장 카드<br>이더넷 카드 혹은 네트워크 어댑터라고 함</li>
+			
+		</ul>
+    </div>
+</div>  
+ 
+<div class="question-card" id="q13">
+    <div class="question-text">
+    13. 다음 중 모든 사물을 네트워크로 연결하여 인간과 사물, 사물과 사물 간에 언제 어디서나 서로 소통할 수 있게 하는 새로운 정보 통신 환경을 의미하는 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q13" onclick="checkAnswer('q13', 1, 3)">클라우드 컴퓨팅(Cloud Computing)</label>
+        <label class="option-label"><input type="radio" name="q13" onclick="checkAnswer('q13', 2, 3)">RSS(Rich Site Summary)</label>
+        <label class="option-label"><input type="radio" name="q13" onclick="checkAnswer('q13', 3, 3)">IoT(Internet of Things)</label>
+        <label class="option-label"><input type="radio" name="q13" onclick="checkAnswer('q13', 4, 3)">빅 데이터(Big Data)</label>
+    </div>
+    <div class="result-message" id="q13-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q13-explain')">설명보기</button>
+    <div class="explanation" id="q13-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>문제에 제시된 내용은 사물 인터넷(IoT)에 대한 설명입니다.</li>
+			<li>클라우드 컴퓨팅 : 인터넷을 통해 서버, 스토리지, 데이터베이스 같은 IT 리소스를 필요할 때 빌려 쓰고 쓴 만큼 비용을 내는 서비스입니다.</li>
+			<li>그리드 컴퓨팅(Grid Computing) : 네트워크로 연결된 여러 대의 컴퓨터를 하나로 묶어 가상의 슈퍼컴퓨터처럼 사용하는 분산 컴퓨팅 기술입니다</li>
+			<li>빅데이터는 기존 데이터 관리 시스템이 처리할 수 없는 방대하고 복잡한 데이터 세트를 의미합니다.</li>
+			<li>RSS(Rich Site Summary) : 웹사이트에 직접 방문하지 않고도 최신 콘텐츠를 자동으로 받아볼 수 있는 구독 서비스 및 데이터 포맷입니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q14">
+    <div class="question-text">
+    14. 다음 중 이미지의 가장자리가 톱니 모양으로 표현되는 계단 현상을 없애기 위하여 경계선을 부드럽게 해주는 필터링 기술은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q14" onclick="checkAnswer('q14', 1, 2)">디더링(Dithering)</label>
+        <label class="option-label"><input type="radio" name="q14" onclick="checkAnswer('q14', 2, 2)">안티앨리어싱(Antialiasing)</label>
+        <label class="option-label"><input type="radio" name="q14" onclick="checkAnswer('q14', 3, 2)">렌더링(Rendering)</label>
+        <label class="option-label"><input type="radio" name="q14" onclick="checkAnswer('q14', 4, 2)">모핑(Morphing)</label>
+    </div>
+    <div class="result-message" id="q14-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q14-explain')">설명보기</button>
+    <div class="explanation" id="q14-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>계단 현상을 보정하기 위해 가장자리의 픽셀들을 주변 색상과 혼합한 중간 색상을 넣어 외형을 부드럽게 만드는 기법을 안티앨리어싱(Anti-Aliasing)이라고 합니다.</li>
+			<li>디더링(Dithering) : 표현할 수 없는 색상이 존재할 경우, 다른 색상들을 섞어서 비슷한 색상을 내는 효과</li>
+			<li>렌더링(Rendering) : 3차원 질감(그림자, 색상, 농도 등)을 줌으로써 입체감과 사실감을 추가하는 과정</li>
+			<li>모핑(Morphing) : 사물의 형상을 다른 모습으로 서서히 변화시키는 기법으로 영화의 특수 효과에서 많이 사용함</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q15">
+    <div class="question-text">
+    15. 다음 중 그래픽 데이터 형식에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q15" onclick="checkAnswer('q15', 1, 1)">BMP : Windows 운영체제의 표준 비트맵 파일 형식으로 압축하여 저장하므로 파일의 크기가 작은 편이다.</label>
+        <label class="option-label"><input type="radio" name="q15" onclick="checkAnswer('q15', 2, 1)">GIF : 인터넷 표준 그래픽 형식으로 8비트 컬러를 사용하여 최대 256 색상까지만 표현할 수 있으며, 애니메이션 표현이 가능하다.</label>
+        <label class="option-label"><input type="radio" name="q15" onclick="checkAnswer('q15', 3, 1)">JPEG : 사진과 같은 선명한 정지 영상 압축 기술에 대한 국제 표준으로 주로 인터넷에서 그림 전송에 사용된다.</label>
+        <label class="option-label"><input type="radio" name="q15" onclick="checkAnswer('q15', 4, 1)">PNG : 트루 컬러의 지원과 투명색 지정이 가능하다.</label>
+    </div>
+    <div class="result-message" id="q15-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q15-explain')">설명보기</button>
+    <div class="explanation" id="q15-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>BMP 파일 형식은 압축을 하지 않으므로 파일의 크기가 큽니다.</li>
+		</ul>
+    </div>
+</div>  
+                          
+<div class="question-card" id="q16">
+    <div class="question-text">
+    16. 다음 중 한글 Windows 10의 ‘작업 관리자’ 대화상자에서 수행할 수 있는 작업으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q16" onclick="checkAnswer('q16', 1, 1)">컴퓨터를 이용하는 사용자 계정의 추가와 삭제를 수행할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q16" onclick="checkAnswer('q16', 2, 1)">현재 실행 중인 앱을 강제로 종료시킬 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q16" onclick="checkAnswer('q16', 3, 1)">시스템의 CPU 사용 내용이나 할당된 메모리의 크기를 파악할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q16" onclick="checkAnswer('q16', 4, 1)">현재 네트워크 상태를 보고 네트워크 처리량을 확인할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q16-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q16-explain')">설명보기</button>
+    <div class="explanation" id="q16-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>[작업 관리자] 창에서는 사용자 계정을 추가하거나 삭제할 수 없습니다. 사용자 계 정의 추가 및 삭제는 [ (설정)] → [계정]을 이용해야 합니다.</li>
+			<li>[작업 관리자] 창에서는 내 PC에서 실행되고 있는 프로그램(앱)들에 대한 프로세스(앱, 백그라운드 프로세스, Windows 프로세스), 성능(CPU, 메모리, 디스크, 이더넷), 앱 기록(리소스 사용량), 시작 프로그램(상태, 사용 안 함 설정), 사용자(CPU, 메모리, 디스크, 네트워크 사용 정보), 세부 정보(실행 파일의 상태, 사용자 이름, ,CPU와 메모리 사용 정보), 서비스(이름, 상태) 등에 대한 정보를 제공해 준다.</li>
+		</ul>
+    </div>
+</div>  
+    
+<div class="question-card" id="q17">
+    <div class="question-text">
+    17. 다음 중 컴퓨터 범죄 예방과 대책에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q17" onclick="checkAnswer('q17', 1, 2)">해킹 여부를 정기적으로 검사한다.</label>
+        <label class="option-label"><input type="radio" name="q17" onclick="checkAnswer('q17', 2, 2)">의심이 가는 이메일은 열어서 내용을 확인하고 삭제한다.</label>
+        <label class="option-label"><input type="radio" name="q17" onclick="checkAnswer('q17', 3, 2)">백신 프로그램을 설치하고 자동 업데이트 기능을 설정 한다.</label>
+        <label class="option-label"><input type="radio" name="q17" onclick="checkAnswer('q17', 4, 2)">회원 가입한 사이트의 패스워드를 주기적으로 변경한다.</label>
+    </div>
+    <div class="result-message" id="q17-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q17-explain')">설명보기</button>
+    <div class="explanation" id="q17-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>의심이 가는 이메일은 열어보지 않고 삭제해야 합니다. 컴퓨터 범죄와 관련된 문제는 상식적인 선에서 생각하면 맞힐 수 있는 내용이 주로 출제됩니다. 문제를 자세히 읽는 습관을 들이세요</li>
+		</ul>
+    </div>
+</div>  
+                                            
+             
+<div class="question-card" id="q18">
+    <div class="question-text">
+    18. 다음 중 컴퓨터에서 사용하는 하드디스크의 파티션에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q18" onclick="checkAnswer('q18', 1, 3)">하나의 물리적인 하드디스크를 여러 개의 파티션으로 나눌 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q18" onclick="checkAnswer('q18', 2, 3)">파티션을 나눈 후에 하드디스크를 사용하기 위해서는 포맷을 해야한다.</label>
+        <label class="option-label"><input type="radio" name="q18" onclick="checkAnswer('q18', 3, 3)">하나의 하드디스크 내의 모든 파티션에는 동일한 운영체제만 설치할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q18" onclick="checkAnswer('q18', 4, 3)">하나의 파티션에는 한 가지 파일 시스템만을 설치할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q18-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q18-explain')">설명보기</button>
+    <div class="explanation" id="q18-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>각각의 파티션에는 서로 다른 운영체제를 설치할 수 있습니다.</li>
+			<li>파티션<br>
+			파티션은 하나의 물리적인 하드디스크를 여러 개의 논리적인 영역으로 나누는 작업으로, 기본 파티션과 확장 파티션이 있다.<br>
+			1) 운영체제에서는 파티션이 하나의 드라이브로 인식된다.<br>
+			2) 하나의 파티션에는 한 종류의 파일 시스템만 사용할 수 있다.<br>
+			3) 파티션을 설정한 후에는 반드시 포맷을 해야 사용할 수 있다.<br>
+			4) 파티션의 분할 및 병합은 '디스크 관리'에서 수행 할 수 있다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q19">
+    <div class="question-text">
+    19. 다음 중 유틸리티 프로그램에 대한 설명으로 적절하지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q19" onclick="checkAnswer('q19', 1, 2)">다수의 작업이나 목적에 대하여 적용되는 편리한 서비스 프로그램이나 루틴을 말한다.</label>
+        <label class="option-label"><input type="radio" name="q19" onclick="checkAnswer('q19', 2, 2)">컴퓨터의 동작에 필수적이고, 컴퓨터를 이용하는 주목적에 대한 일부 특정 작업을 수행하는 소프트웨어들을 가리킨다.</label>
+        <label class="option-label"><input type="radio" name="q19" onclick="checkAnswer('q19', 3, 2)">컴퓨터 하드웨어, 운영체제, 응용 소프트웨어를 관리하는 데 도움을 주도록 설계된 프로그램을 의미한다.</label>
+        <label class="option-label"><input type="radio" name="q19" onclick="checkAnswer('q19', 4, 2)">Windows에서 제공하는 유틸리티 프로그램으로는 메모장, 그림판, 계산기 등을 예로 들 수 있다.</label>
+    </div>
+    <div class="result-message" id="q19-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q19-explain')">설명보기</button>
+    <div class="explanation" id="q19-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>유틸리티 프로그램은 컴퓨터 동작에 필수적이지는 않지만, 컴퓨터를 이용하는 주 목적에 대한 특정 작업을 수행하는 소프트웨어들을 가리킵니다. 문제와 보기가 동일하게 다시 출제되었습니다.</li>
+		</ul>
+    </div>
+</div>  
+                                        
+<div class="question-card" id="q20">
+    <div class="question-text">
+    20. 다음 중 운영체제의 운용 방식으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q20" onclick="checkAnswer('q20', 1, 1)">일괄 처리는 컴퓨터에 입력하는 데이터를 일정량 모았다가 한꺼번에 처리하는 시스템으로, 오프라인으로만 사용한다.</label>
+        <label class="option-label"><input type="radio" name="q20" onclick="checkAnswer('q20', 2, 1)">시분할 시스템은 한 대의 시스템을 여러 사용자가 동시에 사용하는 시스템이다.</label>
+        <label class="option-label"><input type="radio" name="q20" onclick="checkAnswer('q20', 3, 1)">실시간 처리 시스템은 처리할 데이터가 생겨날 때마다 바로 처리하는 시스템이다.</label>
+        <label class="option-label"><input type="radio" name="q20" onclick="checkAnswer('q20', 4, 1)">분산 처리 시스템은 지역적으로 분산된 여러 대의 컴퓨터를 연결하여 작업을 분담하여 처리하는 시스템이다.</label>
+    </div>
+    <div class="result-message" id="q20-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q20-explain')">설명보기</button>
+    <div class="explanation" id="q20-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>일괄 처리 시스템은 오프라인뿐만 아니라 온라인으로도 사용합니다.</li>
+		</ul>
+    </div>
+</div> 	
+
+	<div class="section-title">제2과목 스프레드시트 일반</div>
+<div class="question-card" id="q21">
+    <div class="question-text">
+    21. 다음 중 차트에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q21" onclick="checkAnswer('q21', 1, 3)">기본적으로 워크시트의 행과 열에서 숨겨진 데이터는 차트에 표시되지 않는다.</label>
+        <label class="option-label"><input type="radio" name="q21" onclick="checkAnswer('q21', 2, 3)">차트 제목, 가로/세로 축 제목, 범례, 그림 영역 등은 마우스로 드래그하여 이동할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q21" onclick="checkAnswer('q21', 3, 3)">[Ctrl]을 누른 상태에서 차트 크기를 조절하면 차트의 크기가 셀에 맞춰 조절된다.</label>
+        <label class="option-label"><input type="radio" name="q21" onclick="checkAnswer('q21', 4, 3)">사용자가 자주 사용하는 차트 종류를 차트 서식 파일로 저장할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q21-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q21-explain')">설명보기</button>
+    <div class="explanation" id="q21-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>[Ctrl]이 아닌 [Alt]를 누른 상태에서 차트 크기를 조절해야 차트의 크기가 셀에 맞춰 조절됩니다.</li>
+		</ul>
+    </div>
+</div>  
+ 
+<div class="question-card" id="q22">
+    <div class="question-text">
+    22. 다음은 자료의 화면 표시 형식을 지정한 것이다. 그 결과가 옳은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q22" onclick="checkAnswer('q22', 1, 1)">입력자료: 2021-8-1, 표시형식: yyyy.mmm, 결과: 2021.Aug</label>
+        <label class="option-label"><input type="radio" name="q22" onclick="checkAnswer('q22', 2, 1)">입력자료: 5, 표시형식: #.#0, 결과: 5.00</label>
+        <label class="option-label"><input type="radio" name="q22" onclick="checkAnswer('q22', 3,1)">입력자료: 1234567, 표시형식: 0.0E+00, 결과: 1.23E+8</label>
+        <label class="option-label"><input type="radio" name="q22" onclick="checkAnswer('q22', 4, 1)">입력자료: 2234543, 표시형식: #,###,“천원”, 결과: 2,234천원</label>
+    </div>
+    <div class="result-message" id="q22-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q22-explain')">설명보기</button>
+    <div class="explanation" id="q22-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>① ‘mmm’은 월을 Jan∼Dec로 표시하므로 2021-8-1을 입력한 후 표시 형식으로 yyyy.mmm을 지정하면 2021.Aug로 표시됩니다.<br>
+② 5를 입력한 후 #.#0 형식을 적용하면 5.0이 표시됩니다.<br>
+③ 1234567을 입력한 후 0.0E+00 형식을 적용하면 1.2E+06이 표시됩니다.<br>
+④ 쉼표(,)가 서식의 맨 뒤에 입력되어 있을 때는 천 단위가 생략되므로, 2234543을 입력한 후 표시 형식으로 #,###,“천원”을 지정하면 반올림되어 2,235천원으로 표시됩니다.</li>
+		</ul>
+    </div>
+</div>  
+  
+<div class="question-card" id="q23">
+    <div class="question-text">
+    23. 다음 중 =SUM(A3:A9) 수식이 =SUM(A3A9)와 같이 범위 참조의 콜론(:)이 생략된 경우 나타나는 오류 메시지로 옳은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q23" onclick="checkAnswer('q23', 1, 4)">#N/A</label>
+        <label class="option-label"><input type="radio" name="q23" onclick="checkAnswer('q23', 2, 4)">#NULL!</label>
+        <label class="option-label"><input type="radio" name="q23" onclick="checkAnswer('q23', 3, 4)">#REF!</label>
+        <label class="option-label"><input type="radio" name="q23" onclick="checkAnswer('q23', 4, 4)">#NAME?</label>
+    </div>
+    <div class="result-message" id="q23-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q23-explain')">설명보기</button>
+    <div class="explanation" id="q23-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>인식할 수 없는 텍스트를 수식에 사용했을 때는 #NAME? 오류가 표시됩니다.</li>
+		</ul>
+    </div>
+</div>  
+ 
+ <div class="question-card" id="q24">
+    <div class="question-text">
+    24. 다음 중 [A8] 셀에 아래 함수식을 입력했을 때 나타나는 결과로 옳은 것은?<p></p>
+	=COUNTBLANK(A1:A7) + COUNT(A1:A7)<p></p><img style="width: 131px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191273010.png">
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q24" onclick="checkAnswer('q24', 1, 1)">4</label>
+        <label class="option-label"><input type="radio" name="q24" onclick="checkAnswer('q24', 2, 1)">5</label>
+        <label class="option-label"><input type="radio" name="q24" onclick="checkAnswer('q24', 3, 1)">6</label>
+        <label class="option-label"><input type="radio" name="q24" onclick="checkAnswer('q24', 4, 1)">7</label>
+    </div>
+    <div class="result-message" id="q24-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q24-explain')">설명보기</button>
+    <div class="explanation" id="q24-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>문제에 제시된 수식의 의미는 다음과 같습니다.<br>
+			=COUNTBLANK(A1:A7) + COUNT(A1:A7)<br>
+
+			❶ COUNTBLANK(A1:A7) : COUNTBLANK(인수1, 인수2)는 인수 중 비어 있는 셀의 개수를 구하는 함수로 2를 반환합니다.<br>
+			❷ COUNT(A1:A7) : COUNT(인수1, 인수2, …)는 인수 중 숫자가 들어 있는 셀의 개수를 구하는 함수로 2를 반환합니다.<br>
+			❸ = ❶ + ❷ : 2 + 2는 4입니다.<br>
+			</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q25">
+    <div class="question-text">
+    25. 아래 워크시트에서 [B2:D6] 영역을 참조하여 [C8] 셀에 표시된 바코드에 대한 단가를 [C9] 셀에 표시하였다. 다음 중 [C9] 셀의 수식으로 옳은 것은?<p></p>
+	<img style="width: 286px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191274620.png"><br>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q25" onclick="checkAnswer('q25', 1, 1)">=VLOOKUP(C8, $B$2:$D$6, 3, 0)</label>
+        <label class="option-label"><input type="radio" name="q25" onclick="checkAnswer('q25', 2, 1)">=HLOOKUP(C8, $B$2:$D$6, 3, 0)</label>
+        <label class="option-label"><input type="radio" name="q25" onclick="checkAnswer('q25', 3, 1)">=VLOOKUP($B$1:$D$6, C8, 3, 1)</label>
+        <label class="option-label"><input type="radio" name="q25" onclick="checkAnswer('q25', 4, 1)">=HLOOKUP($B$1:$D$6, C8, 3, 1)</label>
+    </div>
+    <div class="result-message" id="q25-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q25-explain')">설명보기</button>
+    <div class="explanation" id="q25-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>바코드별 단가를 구하기 위해서는 범위의 첫 열에서 바코드를 찾은 후 해당 바코드에 대한 단가를 반환해야 하므로 데이터 범위의 첫 열에서 자료를 찾는 VLOOKUP 함수를 사용합니다.<br>
+			VLOOKUP은 VLOOKUP(찾을값, 범위, 열 번호, 옵션)과 같이 인수를 지정하므로 [C9] 셀에 입력될 수식은 ‘=VLOOKUP(C8, $B$2:$D$6, 3, 0)’입니다. 각각의 인수를 살펴보겠습니다.<P></P>
+			•찾을값 : ‘바코드’가 있는 [C8] 셀을 입력합니다.<P></P>
+			•범위 : [B2:D6]을 입력합니다. [C9] 셀 하나에만 값을 구하므로 데이터 범위를 절대 참조로 지정하지 않아도 되지만, 절대 참조로 지정해도 결과값은 동일합니다.<P></P>
+			•열 번호 : ‘바코드’를 찾은 후 바코드에 대한 단가가 있는 열의 위치인 3을 입력합니다.<P></P>
+			•옵션 : 바코드가 정확히 일치하는 값을 찾아야 하므로, ‘FALSE’나 0을 입력합니다.자주 출제되는 내용입니다.
+			</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q26">
+    <div class="question-text">
+    26. 다음 중 아래 워크시트의 [A1] 셀에서 10.1을 입력한 후 [Ctrl]을 누르고 자동 채우기 핸들을 아래로 드래그한 경우 [A4] 셀에 입력되는 값은?
+	<p><img style="width: 187px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191275350.png"></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q26" onclick="checkAnswer('q26', 1, 3)">10.1</label>
+        <label class="option-label"><input type="radio" name="q26" onclick="checkAnswer('q26', 2, 3)">10.4</label>
+        <label class="option-label"><input type="radio" name="q26" onclick="checkAnswer('q26', 3, 3)">13.1</label>
+        <label class="option-label"><input type="radio" name="q26" onclick="checkAnswer('q26', 4, 3)">13.4</label>
+    </div>
+    <div class="result-message" id="q26-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q26-explain')">설명보기</button>
+    <div class="explanation" id="q26-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>[Ctrl]을 누른 채 숫자가 들어 있는 셀의 채우기 핸들을 드래그하면 값이 1씩 증가하며 입력됩니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q27">
+    <div class="question-text">
+    27. 다음 중 [페이지 설정] 대화상자의 [머리글/바닥글] 탭에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q27" onclick="checkAnswer('q27', 1, 3)">홀수 페이지의 머리글 및 바닥글을 짝수 페이지와 다르게 지정하려면 ‘짝수와 홀수 페이지를 다르게 지정’을 선택한다.</label>
+        <label class="option-label"><input type="radio" name="q27" onclick="checkAnswer('q27', 2, 3)">인쇄되는 첫 번째 페이지에서 머리글과 바닥글을 표시하지 않으려면 ‘첫 페이지를 다르게 지정’을 선택한 후 머리글과 바닥글 편집에서 첫 페이지 머리글과 첫 페이지 바닥글에 아무것도 설정하지 않는다.</label>
+        <label class="option-label"><input type="radio" name="q27" onclick="checkAnswer('q27', 3, 3)">인쇄될 워크시트를 워크시트의 실제 크기의 백분율에 따라 확대·축소하려면 ‘문서에 맞게 배율 조정’을 선택한다.</label>
+        <label class="option-label"><input type="radio" name="q27" onclick="checkAnswer('q27', 4, 3)">머리글 또는 바닥글을 표시하기에 충분한 머리글 또는 바닥글 여백을 확보하려면 ‘페이지 여백에 맞추기’를 선택한다.</label>
+    </div>
+    <div class="result-message" id="q27-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q27-explain')">설명보기</button>
+    <div class="explanation" id="q27-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>인쇄될 워크시트가 아닌 머리글/바닥글의 내용을 워크시트의 실제 크기의 백분율에 따라 확대·축소하려면 ‘문서에 맞게 배율 조정’을 선택해야 합니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q28">
+    <div class="question-text">
+    28. 다음 중 인쇄에 대한 설명으로 옳은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q28" onclick="checkAnswer('q28', 1, 3)">기본적으로 워크시트에서 숨기기를 실행한 영역도 인쇄된다.</label>
+        <label class="option-label"><input type="radio" name="q28" onclick="checkAnswer('q28', 2, 3)">인쇄 영역에 포함된 도형들을 함께 인쇄하려면 [파일] → [인쇄]에서 ‘개체 인쇄’를 선택하여 인쇄한다.</label>
+        <label class="option-label"><input type="radio" name="q28" onclick="checkAnswer('q28', 3, 3)">워크시트에 삽입된 차트만 인쇄하려면 차트가 선택된 상태에서 인쇄 명령을 실행한다.</label>
+        <label class="option-label"><input type="radio" name="q28" onclick="checkAnswer('q28', 4, 3)">여러 시트를 한 번에 인쇄하려면 [파일] → [인쇄]에서 ‘여러 시트 인쇄’를 선택하여 인쇄한다.</label>
+    </div>
+    <div class="result-message" id="q28-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q28-explain')">설명보기</button>
+    <div class="explanation" id="q28-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>기본적으로 워크시트에서 숨기기를 실행한 영역은 인쇄되지 않습니다.<br>
+			인쇄 영역에 포함된 도형들을 함께 인쇄하려면 ‘도형 서식’ 창의 [도형 옵션] → [ (크기 및 속성)] → [속성]에서 ‘개체 인쇄’를 선택한 후 인쇄해야 합니다.<br>여러 시트를 한 번에 인쇄하려면 인쇄할 시트를 모두 선택한 후 [파일] → [인쇄]에서 ‘활성 시트 인쇄’를 선택한 후 인쇄해야 합니다.</li>
+		</ul>
+    </div>
+</div>  
+ 
+ <div class="question-card" id="q29">
+    <div class="question-text">
+    29. [매크로 기록] 대화상자에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q29" onclick="checkAnswer('q29', 1, 2)">매크로 이름에는 공백 문자는 사용할 수 없다.</label>
+        <label class="option-label"><input type="radio" name="q29" onclick="checkAnswer('q29', 2, 2)">바로 가기 키 조합은 숫자로 지정한다.</label>
+        <label class="option-label"><input type="radio" name="q29" onclick="checkAnswer('q29', 3, 2)">매크로 이름에는 +, -, &amp;, ?와 같은 특수문자는 포함될 수 없다.</label>
+        <label class="option-label"><input type="radio" name="q29" onclick="checkAnswer('q29', 4, 2)">매크로 이름의 첫 글자는 반드시 문자로 지정해야 합니다.</label>
+    </div>
+    <div class="result-message" id="q29-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q29-explain')">설명보기</button>
+    <div class="explanation" id="q29-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>매크로의 바로 가기 키 조합 문자는 영문자만 가능합니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q30">
+    <div class="question-text">
+    30. 다음 중 정렬에 대한 설명으로 옳은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q30" onclick="checkAnswer('q30', 1, 2)">최대 24개의 열을 기준으로 정렬할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q30" onclick="checkAnswer('q30', 2, 2)">글꼴 색을 기준으로 정렬할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q30" onclick="checkAnswer('q30', 3, 2)">정렬 대상 범위에 병합된 셀이 포함되어 있어도 정렬할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q30" onclick="checkAnswer('q30', 4, 2)">숨겨진 행은 정렬 결과에 포함되나 숨겨진 열은 정렬 결과에 포함되지 않는다.</label>
+    </div>
+    <div class="result-message" id="q30-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q30-explain')">설명보기</button>
+    <div class="explanation" id="q30-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>정렬 기준은 최대 64개의 열을 지정할 수 있습니다.</li>
+			<li>정렬 대상 범위에 병합된 셀이 포함되어 있을 경우에는 정렬할 수 없습니다.</li>
+			<li>원칙적으로 숨겨진 행이나 열에 있는 데이터는 정렬에 포함되지 않습니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q31">
+    <div class="question-text">
+    31. 다음 중 피벗 테이블에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q31" onclick="checkAnswer('q31', 1, 1)">원본 데이터가 변경되면 피벗 테이블의 데이터도 자동으로 변경된다.</label>
+        <label class="option-label"><input type="radio" name="q31" onclick="checkAnswer('q31', 2, 1)">외부 데이터를 대상으로 피벗 테이블을 작성할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q31" onclick="checkAnswer('q31', 3, 1)">피벗 테이블을 작성한 후에 사용자가 새로운 수식을 추가하여 표시할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q31" onclick="checkAnswer('q31', 4, 1)">많의 양의 자료를 분석하여 다양한 형태로 요약하여 보여주는 기능이다.</label>
+    </div>
+    <div class="result-message" id="q31-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q31-explain')">설명보기</button>
+    <div class="explanation" id="q31-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>원본 데이터가 변경된 경우 [모두 새로 고침]을 눌러 주어야만 피벗 테이블의 데이터도 변경됩니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q32">
+    <div class="question-text">
+    32. 다음 중 아래 그림과 같이 목표값 찾기를 설정했을 때, 이에 대한 의미로 옳은 것은?
+	<p><img style="width: 346px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191275950.png"><br></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q32" onclick="checkAnswer('q32', 1, 1)">평균이 40이 되려면 노트북 판매량이 얼마가 되어야 하는가?</label>
+        <label class="option-label"><input type="radio" name="q32" onclick="checkAnswer('q32', 2, 1)">노트북 판매량이 40이 되려면 평균이 얼마가 되어야 하는가?</label>
+        <label class="option-label"><input type="radio" name="q32" onclick="checkAnswer('q32', 3, 1)">노트북 판매량을 40으로 변경하였을 때 평균은 얼마가 되어야 하는가?</label>
+        <label class="option-label"><input type="radio" name="q32" onclick="checkAnswer('q32', 4, 1)">평균이 40이 되려면 노트북을 제외한 나머지 제품의 판매량이 얼마가 되어야 하는가?</label>
+    </div>
+    <div class="result-message" id="q32-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q32-explain')">설명보기</button>
+    <div class="explanation" id="q32-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>목표값 찾기에 대한 문제는 목표값 찾기의 기능과 ‘목표값 찾기’ 대화상자의 입력란들에 들어갈 내용만 알면 쉽게 맞힐 수 있으니 꼭 정리하고 넘어가세요.</li>
+		</ul>
+    </div>
+</div>  
+   
+<div class="question-card" id="q33">
+    <div class="question-text">
+    33. 다음 중 매크로의 바로 가기 키에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q33" onclick="checkAnswer('q33', 1, 4)">매크로 생성 시 설정한 바로 가기 키는 [매크로] 대화상자의 [옵션]에서 변경할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q33" onclick="checkAnswer('q33', 2, 4)">기본적으로 바로 가기 키는 [Ctrl]과 조합하여 사용하지만 대문자로 지정하면 [Shift]가 자동으로 덧붙는다.</label>
+        <label class="option-label"><input type="radio" name="q33" onclick="checkAnswer('q33', 3, 4)">바로 가기 키의 조합 문자는 영문자만 가능하고, 바로 가기 키를 설정하지 않아도 매크로를 생성할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q33" onclick="checkAnswer('q33', 4, 4)">엑셀에서 기본적으로 지정되어 있는 바로 가기 키는 매크로의 바로가기 키로 지정할 수 없다.</label>
+    </div>
+    <div class="result-message" id="q33-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q33-explain')">설명보기</button>
+    <div class="explanation" id="q33-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>엑셀에서 기본적으로 지정되어 있는 바로 가기 키도 매크로의 바로 가기 키로 지정할 수 있습니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q34">
+    <div class="question-text">
+    34. 아래 워크시트에서 [A]열에 [셀 서식] → [표시 형식] → [사용자 지정] 형식을 이용하여 [C] 열과 같이 나타내고자 한다. 다음 중 입력해야 할 사용자 지정 형식으로 옳은 것은?
+	<p><img style="width: 301px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191276450.png"><br></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q34" onclick="checkAnswer('q34', 1, 4)">G/표준님</label>
+        <label class="option-label"><input type="radio" name="q34" onclick="checkAnswer('q34', 2, 4)">@'님'</label>
+        <label class="option-label"><input type="radio" name="q34" onclick="checkAnswer('q34', 3, 4)">G/표준'님'</label>
+        <label class="option-label"><input type="radio" name="q34" onclick="checkAnswer('q34', 4, 4)">@님</label>
+    </div>
+    <div class="result-message" id="q34-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q34-explain')">설명보기</button>
+    <div class="explanation" id="q34-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>@님을 입력하면 자동으로 @“님”으로 변경됩니다. 문자열 뒤에 문자를 표시하려면 문자열 대신 @를 사용한다는 것을 기억해 두세요.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q35">
+    <div class="question-text">
+    35. 다음 중 아래와 같이 조건을 설정한 고급 필터의 실행 결과에 대한 설명으로 옳은 것은?
+	<p><img style="width: 304px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191276640.png"><br></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q35" onclick="checkAnswer('q35', 1, 1)">소속이 ‘영업팀’이 아니면서 근무경력이 30년 이상인 사원 정보</label>
+        <label class="option-label"><input type="radio" name="q35" onclick="checkAnswer('q35', 2, 1)">소속이 ‘영업팀’이면서 근무경력이 30년 이상인 사원 정보</label>
+        <label class="option-label"><input type="radio" name="q35" onclick="checkAnswer('q35', 3, 1)">소속이 ‘영업팀’이 아니거나 근무경력이 30년 이상인 사원 정보</label>
+        <label class="option-label"><input type="radio" name="q35" onclick="checkAnswer('q35', 4, 1)">소속이 ‘영업팀’이거나 근무경력이 30년 이상인 사원 정보</label>
+    </div>
+    <div class="result-message" id="q35-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q35-explain')">설명보기</button>
+    <div class="explanation" id="q35-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>고급 필터의 조건이 같은 행에 있으면 AND 조건, 다른 행에 있으면 OR 조건으로 연결됩니다.<br>
+			※ “< >”는 같지 않다는 의미입니다.
+			</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q36">
+    <div class="question-text">
+    36. 아래 워크시트에서 [A]열을 오름차순 정렬할 경우 올바르게 정렬된 것은?
+	<p><img style="width: 114px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191277410.png"><br></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q36" onclick="checkAnswer('q36', 1, 2)"><img src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/rEl9Cjqgq2EmqzVkR0tCfAcLAmlKpwrOjLxSetQW.png"
+                                                                 alt="Question Image"></label>
+        <label class="option-label"><input type="radio" name="q36" onclick="checkAnswer('q36', 2, 2)"><img src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/Uc82ZQMaWlMyqtkNQlkf49cZKpUJNgWlJVny7Qcv.png"
+                                                                 alt="Question Image"></label>
+        <label class="option-label"><input type="radio" name="q36" onclick="checkAnswer('q36', 3, 2)"><img src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/FEGTLVu4Eylg4NMqF1YOmstsr96YRWSnz12GMAjL.png"
+                                                                 alt="Question Image"></label>
+        <label class="option-label"><input type="radio" name="q36" onclick="checkAnswer('q36', 4, 2)"><img src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/MsHDRfnnn3J7PxlQkOSaILU1QYxrcYtP3B0OGCxw.png"
+                                                                 alt="Question Image"></label>
+    </div>
+    <div class="result-message" id="q36-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q36-explain')">설명보기</button>
+    <div class="explanation" id="q36-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>오름차순은 숫자 > 문자(특수문자 > 영문 > 한글) > 논리값 > 오류값 > 빈 셀 순으로 정렬됩니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q37">
+    <div class="question-text">
+    37. 다음 중 날짜 및 시간 데이터에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q37" onclick="checkAnswer('q37', 1, 4)">날짜를 입력할 때 일을 입력하지 않으면 자동으로 해당 월의 1일로 입력된다.</label>
+        <label class="option-label"><input type="radio" name="q37" onclick="checkAnswer('q37', 2, 4)">셀에 4/9를 입력하고 [Enter]를 누르면 셀에 04월 09일로 표시된다.</label>
+        <label class="option-label"><input type="radio" name="q37" onclick="checkAnswer('q37', 3, 4)">날짜 및 시간 데이터는 자동으로 오른쪽을 기준으로 정렬된다.</label>
+        <label class="option-label"><input type="radio" name="q37" onclick="checkAnswer('q37', 4, 4)">[Ctrl] + [;] 을 누르면 시스템의 현재 시간, [Ctrl] + [Shift] + [;] 을 누르면 오늘 날짜가 입력된다.</label>
+    </div>
+    <div class="result-message" id="q37-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q37-explain')">설명보기</button>
+    <div class="explanation" id="q37-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>[Ctrl] + [;] 을 누르면 시스템의 오늘 날짜, [Ctrl] + [Shift] + [;]을 누르면 현재 시간이 입력됩니다.<br>
+			</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q38">
+    <div class="question-text">
+    38. 다음 중 데이터가 입력된 셀에서 [Delete]를 눌렀을 때의 상황에 대한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q38" onclick="checkAnswer('q38', 1, 2)">셀에 설정된 메모는 지워지지 않는다.</label>
+        <label class="option-label"><input type="radio" name="q38" onclick="checkAnswer('q38', 2, 2)">셀에 설정된 내용과 서식이 함께 지워진다.</label>
+        <label class="option-label"><input type="radio" name="q38" onclick="checkAnswer('q38', 3, 2)">[홈] → [편집] → [지우기] → [내용 지우기]를 실행한 것과 동일한 결과가 발생한다.</label>
+        <label class="option-label"><input type="radio" name="q38" onclick="checkAnswer('q38', 4, 2)">바로 가기 메뉴에서 [내용 지우기]를 실행한 것과 동일한 결과가 발생한다.</label>
+    </div>
+    <div class="result-message" id="q38-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q38-explain')">설명보기</button>
+    <div class="explanation" id="q38-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>데이터가 입력된 셀에서 [Delete]를 누르면 셀에 입력된 내용은 지워지나 셀에 지정된 서식은 지워지지 않습니다.</li>
+		</ul>
+    </div>
+</div>  
+
+ <div class="question-card" id="q39">
+    <div class="question-text">
+    39. 다음 중 데이터 통합에 관한 설명으로 옳지 않은 것은?
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q39" onclick="checkAnswer('q39', 1, 2)">데이터 통합은 위치를 기준으로 통합할 수도 있고, 영역의 이름을 정의하여 통합할 수도 있다.</label>
+        <label class="option-label"><input type="radio" name="q39" onclick="checkAnswer('q39', 2, 2)">‘원본 데이터에 연결’ 기능은 통합할 데이터가 있는 워크시트와 통합 결과가 작성될 워크시트가 같은 통합 문서에 있는 경우에만 적용할 수 있다.</label>
+        <label class="option-label"><input type="radio" name="q39" onclick="checkAnswer('q39', 3, 2)">다른 원본 영역의 레이블과 일치하지 않는 레이블이 있는 경우에 통합하면 별도의 행이나 열이 만들어진다.</label>
+        <label class="option-label"><input type="radio" name="q39" onclick="checkAnswer('q39', 4, 2)">여러 시트에 있는 데이터나 다른 통합 문서에 입력되어 있는 데이터를 통합할 수 있다.</label>
+    </div>
+    <div class="result-message" id="q39-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q39-explain')">설명보기</button>
+    <div class="explanation" id="q39-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>통합할 데이터가 있는 워크시트와 통합 결과가 작성될 워크시트가 서로 다를 경우에만 ‘원본 데이터 연결’을 적용할 수 있습니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<div class="question-card" id="q40">
+    <div class="question-text">
+    40. 다음 중 조건부 서식을 이용하여 [A2:C5] 영역에 EXCEL과 ACCESS 점수의 합계가 170 이하인 행 전체에 셀 배경색을 지정하기 위한 수식으로 옳은 것은?
+	<p><img style="width: 256px;" src="https://storage.googleapis.com/gilbut-homepage/sinagong/cbt/2024/06/summernote_17191277910.png"><br></p>
+	</div>
+	<div class="options">
+        <label class="option-label"><input type="radio" name="q40" onclick="checkAnswer('q40', 1, 2)">=B$2+C$2&lt;=170</label>
+        <label class="option-label"><input type="radio" name="q40" onclick="checkAnswer('q40', 2, 2)">=$B2+$C2&lt;=170</label>
+        <label class="option-label"><input type="radio" name="q40" onclick="checkAnswer('q40', 3, 2)">=$B$2+$C$2&lt;=170</label>
+        <label class="option-label"><input type="radio" name="q40" onclick="checkAnswer('q40', 4, 2)">=B2+C2&lt;=17</label>
+    </div>
+    <div class="result-message" id="q40-result"></div>
+        <button class="btn-explain" onclick="toggleExplain('q40-explain')">설명보기</button>
+    <div class="explanation" id="q40-explain">
+        <strong>[해설]</strong><br>
+		<ul>
+			<li>조건부 서식의 규칙으로 셀 주소를 이용해 규칙에 맞는 행 전체에 서식이 적용되도록 수식을 작성할 경우 열 번호에만 절대 주소 표시($)를 해야 합니다.</li>
+		</ul>
+    </div>
+</div>  
+
+<script>
+    // 1. 비밀번호 확인 기능 (기본 암호: 0905)
+    const SECRET_PASSWORD = "0905";
+
+    function checkPassword() {
+        const inputKey = document.getElementById('access-key').value;
+        if (inputKey === SECRET_PASSWORD) {
+            document.getElementById('auth-overlay').style.display = 'none';
+            document.getElementById('main-content').style.display = 'block';
+        } else {
+            document.getElementById('auth-error').style.display = 'block';
+        }
+    }
+
+    // 2. 소스 보기 단축키 및 개발자 도구 차단
+    document.addEventListener('keydown', function(e) {
+        // F12 차단
+        if (e.key === 'F12') {
+            e.preventDefault();
+        }
+        // Ctrl + Shift + I / J / C 차단
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+            e.preventDefault();
+        }
+        // Ctrl + U (소스 보기) 차단
+        if (e.ctrlKey && (e.key === 'U' || e.key === 'u')) {
+            e.preventDefault();
+        }
+        // Ctrl + S (저장) 차단
+        if (e.ctrlKey && (e.key === 'S' || e.key === 's')) {
+            e.preventDefault();
+        }
+    });
+
+    // 3. 문제 채점 및 해설 기능
+    function checkAnswer(questionId, selectedVal, correctAnswer) {
+        const resultDiv = document.getElementById(questionId + '-result');
+        if (selectedVal === correctAnswer) {
+            resultDiv.textContent = "⭕ 정답입니다!";
+            resultDiv.className = "result-message correct";
+        } else {
+            resultDiv.textContent = "❌ 오답입니다. 다시 시도해보세요.";
+            resultDiv.className = "result-message incorrect";
+        }
+    }
+
+    function toggleExplain(explainId) {
+        const explainDiv = document.getElementById(explainId);
+        explainDiv.style.display = (explainDiv.style.display === "block") ? "none" : "block";
+    }
+</script>
+
+</body>
+</html>
