@@ -1,9 +1,866 @@
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-<title>테스트용</title>
-</head>
+    <!-- PWA 설정 -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#1a365d">
+    <link rel="apple-touch-icon" href="icon-192.png">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>대한검정회 7급 한자 학습 및 쓰기 노트</title>
+    <!-- Hanzi Writer 라이브러리 (CDN) -->
+    <script src="https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #1a365d;
+            --accent-color: #e53e3e;
+            --bg-color: #f7fafc;
+            --border-color: #e2e8f0;
+        }
 
-<body>
-<a href="cbt1.html">cbt1</a>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background-color: var(--bg-color);
+            margin: 0;
+            padding: 20px 10px;
+            color: #2d3748;
+            box-sizing: border-box;
+            /* 드래그 및 텍스트 선택 방지 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+            box-sizing: border-box;
+        }
+
+        .header-area {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 {
+            color: var(--primary-color);
+            margin: 0;
+            font-size: 1.4em;
+        }
+
+        .exam-link-btn {
+            background-color: var(--accent-color);
+            color: white;
+            text-decoration: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .exam-link-btn:hover {
+            background-color: #c53030;
+        }
+
+        /* 한자 선택 스크롤 목록 */
+        .word-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+            gap: 6px;
+            margin-bottom: 20px;
+            max-height: 140px;
+            overflow-y: auto;
+            padding: 8px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            background: #f7fafc;
+        }
+
+        .word-chip {
+            padding: 6px 0;
+            background: #fff;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            cursor: pointer;
+            text-align: center;
+            font-size: 1em;
+            font-weight: bold;
+            transition: all 0.2s;
+            user-select: none;
+        }
+
+        .word-chip.active {
+            background: var(--primary-color);
+            color: #fff;
+            border-color: var(--primary-color);
+        }
+
+        /* 메인 학습 영역 2열 레이아웃 - 모바일 자동 1열 반응형 */
+        .study-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 15px;
+            background: #fff;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        .info-header {
+            text-align: center;
+            border-bottom: 1px dashed var(--border-color);
+            padding-bottom: 10px;
+            margin-bottom: 15px;
+        }
+
+        .hanja-title {
+            font-size: 3.2em;
+            font-weight: bold;
+            color: var(--primary-color);
+            line-height: 1.1;
+        }
+
+        .meta-info {
+            font-size: 1em;
+            color: #4a5568;
+            margin-top: 8px;
+            line-height: 1.5;
+        }
+
+        /* 획순 가이드 영역 (HanziWriter) */
+        .stroke-order-box {
+            margin: 10px 0 15px 0;
+            padding: 12px;
+            background: #edf2f7;
+            border-radius: 6px;
+            text-align: center;
+        }
+
+        .stroke-title-wrap {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stroke-title {
+            font-size: 0.85em;
+            font-weight: bold;
+            color: #4a5568;
+        }
+
+        .btn-animate {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.75em;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-animate:hover {
+            background-color: #2b6cb0;
+        }
+
+        #hanzi-writer-target {
+            width: 160px;
+            height: 160px;
+            margin: 0 auto;
+            background: #fff;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-sizing: border-box;
+        }
+
+        #error-msg {
+            color: #e53e3e;
+            font-size: 0.8em;
+            margin-top: 6px;
+        }
+
+        /* 반응형 손글씨 패드 영역 */
+        .pad-card {
+            align-items: center;
+        }
+
+        .canvas-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .canvas-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 360px;
+            aspect-ratio: 1 / 1;
+            border: 2px dashed #a0aec0;
+            border-radius: 8px;
+            background-color: #fff;
+            background-image: 
+                linear-gradient(to right, #edf2f7 1px, transparent 1px),
+                linear-gradient(to bottom, #edf2f7 1px, transparent 1px);
+            background-size: 50% 50%;
+            box-sizing: border-box;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.03);
+            touch-action: none;
+        }
+
+        .canvas-wrapper canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+            cursor: crosshair;
+        }
+
+        .btn-clear {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 6px;
+            background: #718096;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 0.9em;
+            transition: background 0.2s;
+        }
+
+        .btn-clear:hover {
+            background: #4a5568;
+        }
+
+        /* 관련 단어 및 사자성어 영역 */
+        .section-title {
+            font-size: 1em;
+            font-weight: bold;
+            color: var(--primary-color);
+            border-left: 4px solid var(--primary-color);
+            padding-left: 8px;
+            margin: 12px 0 8px 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .word-tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            align-content: flex-start;
+            flex: 1;
+        }
+
+        .word-tag {
+            position: relative;
+            background: #ebf8ff;
+            color: #2b6cb0;
+            padding: 5px 10px;
+            border-radius: 14px;
+            font-size: 0.85em;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background 0.2s;
+            height: fit-content;
+        }
+
+        .word-tag:hover {
+            background: #bee3f8;
+        }
+
+        .word-tag::after {
+            content: attr(data-tooltip);
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #2d3748;
+            color: #fff;
+            padding: 5px 8px;
+            border-radius: 6px;
+            font-size: 0.75em;
+            white-space: nowrap;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            pointer-events: none;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .word-tag::before {
+            content: '';
+            position: absolute;
+            bottom: 105%;
+            left: 50%;
+            transform: translateX(-50%);
+            border-width: 5px;
+            border-style: solid;
+            border-color: #2d3748 transparent transparent transparent;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.2s ease, visibility 0.2s ease;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .word-tag:hover::after,
+        .word-tag:hover::before {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .idiom-box {
+            background: #fffaf0;
+            border: 1px solid #feebc8;
+            padding: 8px 10px;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .idiom-name {
+            font-size: 0.9em;
+            font-weight: bold;
+            color: #c05621;
+        }
+
+        .idiom-mean {
+            font-size: 0.8em;
+            color: #7b341e;
+            margin-top: 2px;
+            line-height: 1.3;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 10px 5px;
+            }
+            .container {
+                padding: 15px;
+            }
+            .header-area {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .exam-link-btn {
+                width: 100%;
+                text-align: center;
+                box-sizing: border-box;
+            }
+            .study-layout {
+                grid-template-columns: 1fr;
+            }
+            .hanja-title {
+                font-size: 2.8em;
+            }
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;" ondragstart="return false;" onselectstart="return false;">
+
+<div class="container">
+    <div class="header-area">
+        <h1>대한검정회 7급 한자 학습 노트</h1>
+        <!--<a href="hanja_exam.html" class="exam-link-btn">📝 7급 기출문제 풀어보기 ➔</a>-->
+    </div>
+
+    <!-- 한자 선택 목록 -->
+    <div class="word-grid" id="wordList"></div>
+
+    <div class="study-layout">
+        <!-- 왼쪽: 기본 정보, e-획순, 관련 단어 -->
+        <div class="card">
+            <div class="info-header">
+                <div class="hanja-title" id="displayHanja">-</div>
+                <div class="meta-info">
+                    <strong>훈음:</strong> <span id="displayMean" style="color:#2b6cb0; font-weight:bold;">-</span><br>
+                    <strong>부수:</strong> <span id="displayBusu">-</span> | 
+                    <strong>총획:</strong> <span id="displayStroke">-</span>
+                </div>
+            </div>
+
+            <!-- HanziWriter e-획순 가이드 영역 -->
+            <div class="stroke-order-box">
+                <div class="stroke-title-wrap">
+                    <span class="stroke-title">✍️ e-획순 애니메이션</span>
+                    <button class="btn-animate" onclick="replayStrokeAnimation()">획순보기 🔄</button>
+                </div>
+                <div id="hanzi-writer-target"></div>
+                <div id="error-msg"></div>
+            </div>
+
+            <!-- 관련 단어 영역 -->
+            <div class="section-title">📚 관련 단어 <span style="font-size:0.8em; font-weight:normal; color:#718096;">(터치 시 뜻 확인)</span></div>
+            <div class="word-tag-list" id="displayWords"></div>
+        </div>
+
+        <!-- 오른쪽: 대형 손쓰기 패드 (상단) + 연관 사자성어 (하단) -->
+        <div class="card pad-card">
+            <div class="section-title" style="margin-top:0;">✍️ 직접 따라 쓰기</div>
+            <div class="canvas-container">
+                <div class="canvas-wrapper">
+                    <canvas id="paintCanvas"></canvas>
+                </div>
+                <button class="btn-clear" onclick="clearCanvas()">쓰기 초기화 🔄</button>
+            </div>
+
+            <!-- 연관 사자성어 영역 -->
+            <div class="section-title">💡 연관 사자성어 / 고사성어</div>
+            <div id="displayIdioms" style="width: 100%;"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    /* ===================================================
+     * [개발자 도구 및 소스 보기 차단 스크립트]
+     * =================================================== */
+    
+    // 1. 키보드 단축키 차단 (F12, Ctrl+Shift+I/J/C, Ctrl+U 등)
+    document.addEventListener('keydown', function(e) {
+        if (e.keyCode === 123) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+        
+        if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+
+        if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 85) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+
+        if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
+            e.preventDefault();
+            e.stopPropagation();
+            return false;
+        }
+    }, false);
+
+    // 2. 무한 디버거
+    setInterval(function() {
+        (function() {
+            function detectDevTools(level) {
+                if (('' + level / level).length !== 1 || level % 20 === 0) {
+                    (function() {}).constructor('debugger')();
+                } else {
+                    (function() {}).constructor('debugger')();
+                }
+                detectDevTools(++level);
+            }
+            try {
+                detectDevTools(0);
+            } catch (e) {}
+        })();
+    }, 1000);
+
+
+    /* ===================================================
+     * [대한검정회 7급 한자 학습 데이터 (20자)]
+     * =================================================== */
+    const hanjaData = [
+        { 
+            hanja: '大', mean: '큰 대', busu: '大 (큰 대)', stroke: '3획',
+            words: [
+                { word: '大人 (대인)', mean: '덕망이 높은 사람, 어른' },
+                { word: '大口 (대구)', mean: '큰 입, 큰 말' },
+                { word: '大小 (대소)', mean: '큼과 작음' }
+            ],
+            idioms: [{ name: '大同小異 (대동소이)', mean: '대체로 같고 작은 차이만 있음.' }]
+        },
+        { 
+            hanja: '小', mean: '작을 소', busu: '小 (작을 소)', stroke: '3획',
+            words: [
+                { word: '小人 (소인)', mean: '키가 작은 사람, 도량이 좁은 사람' },
+                { word: '小口 (소구)', mean: '작은 입, 적은 수량' },
+                { word: '大小 (대소)', mean: '큼과 작음' }
+            ],
+            idioms: [{ name: '小貪大失 (소탐대실)', mean: '작은 것을 탐내다가 큰 것을 잃음.' }]
+        },
+        { 
+            hanja: '年', mean: '해 년', busu: '干 (방패 간)', stroke: '6획',
+            words: [
+                { word: '年月 (년월)', mean: '해와 달, 세월' },
+                { word: '少年 (소년)', mean: '나이가 어린 아이' },
+                { word: '中年 (중년)', mean: '마흔 살 안팎의 나이' }
+            ],
+            idioms: [{ name: '萬壽無疆 (만수무강)', mean: '탈 없이 오래도록 삶.' }]
+        },
+        { 
+            hanja: '中', mean: '가운데 중', busu: '丨 (뚫을 곤)', stroke: '4획',
+            words: [
+                { word: '水中 (수중)', mean: '물속' },
+                { word: '山中 (산중)', mean: '산속' },
+                { word: '日中 (일중)', mean: '한낮' }
+            ],
+            idioms: [{ name: '百發百中 (백발백중)', mean: '총알이나 화살을 쏘는 대로 다 맞음.' }]
+        },
+        { 
+            hanja: '上', mean: '위 상', busu: '一 (한 일)', stroke: '3획',
+            words: [
+                { word: '上下 (상하)', mean: '위와 아래' },
+                { word: '山上 (산상)', mean: '산 위' },
+                { word: '水上 (수상)', mean: '물 위' }
+            ],
+            idioms: [{ name: '雪上加霜 (설상가상)', mean: '눈 위에 서리가 더함. 어려운 일이 겹침.' }]
+        },
+        { 
+            hanja: '下', mean: '아래 하', busu: '一 (한 일)', stroke: '3획',
+            words: [
+                { word: '天下 (천하)', mean: '하늘 아래의 온 세상' },
+                { word: '山下 (산하)', mean: '산 아래' },
+                { word: '上下 (상하)', mean: '위와 아래' }
+            ],
+            idioms: [{ name: '目不識丁 (목불식정)', mean: '아주 까막눈임.' }]
+        },
+        { 
+            hanja: '左', mean: '왼 좌', busu: '工 (장인 공)', stroke: '5획',
+            words: [
+                { word: '左右 (좌우)', mean: '왼쪽과 오른쪽, 옆' },
+                { word: '左手 (좌수)', mean: '왼손' }
+            ],
+            idioms: [{ name: '左右顧眄 (좌우고면)', mean: '이리저리 둘러보며 결정을 못 내림.' }]
+        },
+        { 
+            hanja: '右', mean: '오른 우', busu: '口 (입 구)', stroke: '5획',
+            words: [
+                { word: '右手 (우수)', mean: '오른손' },
+                { word: '左右 (좌우)', mean: '왼쪽과 오른쪽' }
+            ],
+            idioms: [{ name: '右往左往 (우왕좌왕)', mean: '갈팡질팡 어찌할 바를 몰라함.' }]
+        },
+        { 
+            hanja: '內', mean: '안 내', busu: '冂 (멀경 들)', stroke: '4획',
+            words: [
+                { word: '內外 (내외)', mean: '안과 밖, 부부' },
+                { word: '山內 (산내)', mean: '산 안쪽' },
+                { word: '門內 (문내)', mean: '문 안' }
+            ],
+            idioms: [{ name: '內憂外患 (내우외환)', mean: '안팎의 근심과 걱정.' }]
+        },
+        { 
+            hanja: '外', mean: '바깥 외', busu: '夕 (저녁 석)', stroke: '5획',
+            words: [
+                { word: '門外 (문외)', mean: '문 밖' },
+                { word: '外人 (외인)', mean: '외부 사람' },
+                { word: '內外 (내외)', mean: '안과 밖' }
+            ],
+            idioms: [{ name: '外柔內剛 (외유내강)', mean: '겉은 부드러우나 속은 강함.' }]
+        },
+        { 
+            hanja: '出', mean: '날 출', busu: '凵 (위튼입구)', stroke: '5획',
+            words: [
+                { word: '出入 (출입)', mean: '나아가고 들어옴' },
+                { word: '出門 (출문)', mean: '문밖으로 나감' },
+                { word: '日出 (일출)', mean: '해돋이' }
+            ],
+            idioms: [{ name: '出將入相 (출장입상)', mean: '문무를 다 갖추어 큰 실력을 발휘함.' }]
+        },
+        { 
+            hanja: '入', mean: '들 입', busu: '入 (들 입)', stroke: '2획',
+            words: [
+                { word: '山入 (산입)', mean: '산으로 들어감' },
+                { word: '入月 (입월)', mean: '달에 들어섬' },
+                { word: '出入 (출입)', mean: '드나듦' }
+            ],
+            idioms: [{ name: '入耳出口 (입이출구)', mean: '귀로 듣고 입으로 바로 말함 (깊이 생각하지 않음).' }]
+        },
+        { 
+            hanja: '目', mean: '눈 목', busu: '目 (눈 목)', stroke: '5획',
+            words: [
+                { word: '注目 (주목)', mean: '관심을 두고 바라봄' },
+                { word: '項目 (항목)', mean: '법률이나 규정 등의 하나하나의 조항' }
+            ],
+            idioms: [{ name: '目不識丁 (목불식정)', mean: '글자를 한 자도 알지 못함.' }]
+        },
+        { 
+            hanja: '口', mean: '입 구', busu: '口 (입 구)', stroke: '3획',
+            words: [
+                { word: '人口 (인구)', mean: '일정한 지역에 사는 사람의 수' },
+                { word: '出口 (출구)', mean: '나가는 문' },
+                { word: '入口 (입구)', mean: '들어가는 문' }
+            ],
+            idioms: [{ name: '異口同聲 (이구동성)', mean: '입은 다르나 목소리는 같음. 여러 사람의 말이 같음.' }]
+        },
+        { 
+            hanja: '手', mean: '손 수', busu: '手 (손 수)', stroke: '4획',
+            words: [
+                { word: '上手 (상수)', mean: '수가 뛰어난 사람' },
+                { word: '下手 (하수)', mean: '수가 모자라는 사람' },
+                { word: '入手 (입수)', mean: '손에 넣음' }
+            ],
+            idioms: [{ name: '束手無策 (속수무책)', mean: '손을 묶인 듯 어찌할 도리가 없음.' }]
+        },
+        { 
+            hanja: '足', mean: '발 족', busu: '足 (발 족)', stroke: '7획',
+            words: [
+                { word: '手足 (수족)', mean: '손과 발, 마음대로 부리는 사람' },
+                { word: '不足 (부족)', mean: '모자람' }
+            ],
+            idioms: [{ name: '舉足輕重 (거족경중)', mean: '일거수일투족이 매우 중요한 위치에 있음.' }]
+        },
+        { 
+            hanja: '江', mean: '강 강', busu: '氵 (삼수변)', stroke: '6획',
+            words: [
+                { word: '江山 (강산)', mean: '강과 산, 자연' },
+                { word: '江水 (강수)', mean: '강물' }
+            ],
+            idioms: [{ name: '錦繡江山 (금수강산)', mean: '비단에 수놓은 듯 아름다운 산천.' }]
+        },
+        { 
+            hanja: '山', mean: '메 산', busu: '山 (메 산)', stroke: '3획',
+            words: [
+                { word: '火山 (화산)', mean: '마그마가 분출하는 산' },
+                { word: '山水 (산수)', mean: '산과 물, 자연경관' },
+                { word: '江山 (강산)', mean: '강과 산' }
+            ],
+            idioms: [{ name: '泰山北斗 (태산북두)', mean: '존경받는 권위자.' }]
+        },
+        { 
+            hanja: '靑', mean: '푸를 청', busu: '靑 (푸를 청)', stroke: '8획',
+            words: [
+                { word: '靑年 (청년)', mean: '젊은이' },
+                { word: '靑山 (청산)', mean: '푸른 산' }
+            ],
+            idioms: [{ name: '靑出於藍 (청출어람)', mean: '제자가 스승보다 나음.' }]
+        },
+        { 
+            hanja: '白', mean: '흰 백', busu: '白 (흰 백)', stroke: '5획',
+            words: [
+                { word: '白人 (백인)', mean: '흰 피부를 가진 인종' },
+                { word: '白日 (백일)', mean: '밝은 낮' },
+                { word: '白手 (백수)', mean: '한일 없이 빈둥거리는 사람' }
+            ],
+            idioms: [{ name: '白骨難忘 (백골난망)', mean: '죽어도 잊지 못할 큰 은혜.' }]
+        }
+    ];
+
+    let currentIdx = 0;
+    let writerInstance = null;
+
+    // 1. HanziWriter 획순 설정
+    function renderHanziWriter(character) {
+        const targetDiv = document.getElementById('hanzi-writer-target');
+        const errorMsg = document.getElementById('error-msg');
+        
+        targetDiv.innerHTML = '';
+        errorMsg.textContent = '';
+
+        try {
+            writerInstance = HanziWriter.create('hanzi-writer-target', character, {
+                width: 150,
+                height: 150,
+                padding: 5,
+                showOutline: true,
+                strokeAnimationSpeed: 1.2,
+                delayBetweenStrokes: 150,
+                strokeColor: '#1a365d',
+                outlineColor: '#cbd5e0',
+                onLoadCharDataError: function() {
+                    errorMsg.textContent = '해당 한자의 획순 데이터를 불러올 수 없습니다.';
+                }
+            });
+        } catch (e) {
+            errorMsg.textContent = '획순 라이브러리 실행 중 오류가 발생했습니다.';
+            console.error(e);
+        }
+    }
+
+    // 획순보기 버튼
+    function replayStrokeAnimation() {
+        if (writerInstance) {
+            writerInstance.animateCharacter();
+        }
+    }
+
+    // 2. 반응형 손글씨 캔버스 설정
+    const canvas = document.getElementById('paintCanvas');
+    const ctx = canvas.getContext('2d');
+    let isDrawing = false;
+
+    function resizeCanvas() {
+        const rect = canvas.parentElement.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+        ctx.strokeStyle = '#e53e3e';
+        ctx.lineWidth = 8;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+    }
+
+    function initCanvas() {
+        resizeCanvas();
+        window.addEventListener('resize', resizeCanvas);
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseleave', stopDrawing);
+
+        canvas.addEventListener('touchstart', (e) => {
+            e.preventDefault();
+            startDrawing(e.touches[0]);
+        }, { passive: false });
+
+        canvas.addEventListener('touchmove', (e) => {
+            e.preventDefault();
+            draw(e.touches[0]);
+        }, { passive: false });
+
+        canvas.addEventListener('touchend', stopDrawing);
+    }
+
+    function getEventPos(e) {
+        const rect = canvas.getBoundingClientRect();
+        return {
+            x: e.clientX - rect.left,
+            y: e.clientY - rect.top
+        };
+    }
+
+    function startDrawing(e) { 
+        isDrawing = true; 
+        const pos = getEventPos(e);
+        ctx.beginPath();
+        ctx.moveTo(pos.x, pos.y);
+    }
+
+    function draw(e) {
+        if (!isDrawing) return;
+        const pos = getEventPos(e);
+        ctx.lineTo(pos.x, pos.y);
+        ctx.stroke();
+    }
+
+    function stopDrawing() { 
+        isDrawing = false; 
+    }
+
+    function clearCanvas() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+
+    // 3. 한자 목록 생성
+    function renderWordGrid() {
+        const wordListEl = document.getElementById('wordList');
+        wordListEl.innerHTML = '';
+
+        hanjaData.forEach((item, index) => {
+            const chip = document.createElement('div');
+            chip.className = `word-chip ${index === currentIdx ? 'active' : ''}`;
+            chip.innerText = item.hanja;
+            
+            chip.onclick = () => {
+                currentIdx = index;
+                document.querySelectorAll('.word-chip').forEach((c, i) => {
+                    c.classList.toggle('active', i === index);
+                });
+                loadHanjaData();
+            };
+            wordListEl.appendChild(chip);
+        });
+    }
+
+    // 4. 선택 한자 정보 로드
+    function loadHanjaData() {
+        const data = hanjaData[currentIdx];
+        
+        document.getElementById('displayHanja').innerText = data.hanja;
+        document.getElementById('displayMean').innerText = data.mean;
+        document.getElementById('displayBusu').innerText = data.busu;
+        document.getElementById('displayStroke').innerText = data.stroke;
+
+        renderHanziWriter(data.hanja);
+
+        const wordsEl = document.getElementById('displayWords');
+        wordsEl.innerHTML = '';
+        data.words.forEach(w => {
+            const tag = document.createElement('span');
+            tag.className = 'word-tag';
+            tag.innerText = w.word;
+            tag.setAttribute('data-tooltip', w.mean);
+            wordsEl.appendChild(tag);
+        });
+
+        const idiomsEl = document.getElementById('displayIdioms');
+        idiomsEl.innerHTML = '';
+        if (data.idioms && data.idioms.length > 0) {
+            data.idioms.forEach(idiom => {
+                const box = document.createElement('div');
+                box.className = 'idiom-box';
+                box.innerHTML = `
+                    <div class="idiom-name">${idiom.name}</div>
+                    <div class="idiom-mean">${idiom.mean}</div>
+                `;
+                idiomsEl.appendChild(box);
+            });
+        } else {
+            idiomsEl.innerHTML = '<div style="color:#a0aec0; font-size:0.85em; padding: 5px 0;">등록된 주요 사자성어가 없습니다.</div>';
+        }
+
+        clearCanvas();
+    }
+
+    window.onload = () => {
+        initCanvas();
+        renderWordGrid();
+        loadHanjaData();
+    };
+</script>
+<script>
+  // PWA 서비스 워커 등록
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('./sw.js')
+        .then((reg) => console.log('Service Worker Registered!', reg))
+        .catch((err) => console.error('Service Worker Registration Failed:', err));
+    });
+  }
+</script>
 </body>
 </html>
