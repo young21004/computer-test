@@ -1,7 +1,7 @@
 const CACHE_NAME = 'hanja-app-v1';
 const ASSETS_TO_CACHE = [
   './',
-  './index.html',
+  './hanja_study_8.html',
   './manifest.json',
   'https://cdn.jsdelivr.net/npm/hanzi-writer@3.5/dist/hanzi-writer.min.js'
 ];
