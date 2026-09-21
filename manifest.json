@@ -1,7 +1,7 @@
 {
   "name": "8급 한자 학습 노트",
   "short_name": "8급한자",
-  "start_url": "./hanja_study_8.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#1a365d",
