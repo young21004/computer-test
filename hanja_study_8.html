@@ -24,7 +24,7 @@
             font-family: 'Noto Sans KR', sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 20px 10px;
+            padding: 20px 10px 80px 10px; /* 하단 설치 배너 여백 확보 */
             color: #2d3748;
             box-sizing: border-box;
             /* 드래그 및 텍스트 선택 방지 */
@@ -55,10 +55,42 @@
             flex-wrap: wrap;
         }
 
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
         h1 {
             color: var(--primary-color);
             margin: 0;
             font-size: 1.4em;
+        }
+
+        .header-btns {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        /* 앱 설치 버튼 스타일 */
+        .install-btn {
+            background-color: #2b6cb0;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .install-btn:hover {
+            background-color: #2c5282;
         }
 
         .exam-link-btn {
@@ -77,21 +109,65 @@
             background-color: #c53030;
         }
 
-        /* 한자 선택 스크롤 목록 (한 화면에 10개씩 노출되도록 수정) */
+        /* 하단 앱 설치 안내 고정 배너 */
+        .install-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 20px;
+            display: none; /* 기본숨김 */
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.15);
+            z-index: 1000;
+        }
+
+        .install-banner-text {
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+
+        .install-banner-btns {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-banner-install {
+            background: #319795;
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn-banner-close {
+            background: transparent;
+            color: #a0aec0;
+            border: 1px solid #a0aec0;
+            padding: 6px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        /* 한자 선택 스크롤 목록 (한 화면 10개 노출 조정) */
         .word-grid {
             display: grid;
-            /* 한 줄에 5개씩 균등 배치 */
-            grid-template-columns: repeat(10, 1fr); 
+            grid-template-columns: repeat(10, 1fr);
             gap: 8px;
             margin-bottom: 20px;
-            /* 2줄( 총 10개 ) 높이에 맞춰 고정 및 스크롤 설정 */
-            max-height: 80px; 
+            max-height: 80px;
             overflow-y: auto;
             padding: 8px;
             border: 1px solid var(--border-color);
             border-radius: 8px;
             background: #f7fafc;
         }
+
         .word-chip {
             padding: 6px 0;
             background: #fff;
@@ -367,7 +443,7 @@
 
         @media (max-width: 768px) {
             body {
-                padding: 10px 5px;
+                padding: 10px 5px 70px 5px;
             }
             .container {
                 padding: 15px;
@@ -376,10 +452,9 @@
                 flex-direction: column;
                 align-items: flex-start;
             }
-            .exam-link-btn {
+            .header-btns {
                 width: 100%;
-                text-align: center;
-                box-sizing: border-box;
+                justify-content: flex-end;
             }
             .study-layout {
                 grid-template-columns: 1fr;
@@ -395,7 +470,11 @@
 <div class="container">
     <div class="header-area">
         <h1>대한검정회 8급 한자 학습 노트</h1>
-        <!--<a href="hanja_exam.html" class="exam-link-btn">📝 8급 기출문제 풀어보기 ➔</a>-->
+        <div class="header-btns">
+            <!-- 앱 설치 버튼 -->
+            <button id="installHeaderBtn" class="install-btn" onclick="promptAppInstall()">📲 앱 설치하기</button>
+            <!--<a href="hanja_exam.html" class="exam-link-btn">📝 8급 기출문제 풀어보기 ➔</a>-->
+        </div>
     </div>
 
     <!-- 한자 선택 목록 -->
@@ -445,42 +524,100 @@
     </div>
 </div>
 
+<!-- 하단 앱 설치 안내 고정 배너 -->
+<div id="installBanner" class="install-banner">
+    <span class="install-banner-text">📱 홈 화면에 앱을 추가하여 편하게 학습해보세요!</span>
+    <div class="install-banner-btns">
+        <button class="btn-banner-install" onclick="promptAppInstall()">설치하기</button>
+        <button class="btn-banner-close" onclick="closeInstallBanner()">닫기</button>
+    </div>
+</div>
+
 <script>
+    /* ===================================================
+     * [PWA 앱 설치 로직]
+     * =================================================== */
+    let deferredPrompt = null;
+    const installHeaderBtn = document.getElementById('installHeaderBtn');
+    const installBanner = document.getElementById('installBanner');
+
+    // 브라우저가 앱 설치 준비가 되었을 때 발동
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        
+        // 버튼 및 배너 보이기
+        if (installHeaderBtn) installHeaderBtn.style.display = 'inline-flex';
+        if (installBanner) installBanner.style.display = 'flex';
+    });
+
+    // 앱 설치 수행 함수
+    function promptAppInstall() {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            deferredPrompt.userChoice.then((choiceResult) => {
+                if (choiceResult.outcome === 'accepted') {
+                    console.log('사용자가 앱 설치를 승인했습니다.');
+                }
+                deferredPrompt = null;
+                hideInstallUI();
+            });
+        } else {
+            // iOS 등 이벤트 프롬프트 지원 안하는 경우 안내
+            const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+            if (isIOS) {
+                alert('iOS(아이폰/아이패드)에서는 브라우저 하단의 [공유] 버튼을 누른 후 [홈 화면에 추가]를 선택해주세요!');
+            } else {
+                alert('이미 앱이 설치되어 있거나, 설치를 지원하지 않는 브라우저 환경입니다.');
+            }
+        }
+    }
+
+    function closeInstallBanner() {
+        if (installBanner) installBanner.style.display = 'none';
+    }
+
+    function hideInstallUI() {
+        if (installHeaderBtn) installHeaderBtn.style.display = 'none';
+        closeInstallBanner();
+    }
+
+    // 앱 설치 완료 시
+    window.addEventListener('appinstalled', () => {
+        hideInstallUI();
+        deferredPrompt = null;
+        console.log('PWA 앱이 설치되었습니다.');
+    });
+
+
     /* ===================================================
      * [개발자 도구 및 소스 보기 차단 스크립트]
      * =================================================== */
-    
-    // 1. 키보드 단축키 차단 (F12, Ctrl+Shift+I/J/C, Ctrl+U 등)
     document.addEventListener('keydown', function(e) {
-        // F12 차단
         if (e.keyCode === 123) {
             e.preventDefault();
             e.stopPropagation();
             return false;
         }
         
-        // Ctrl+Shift+I (개발자 도구), Ctrl+Shift+J (콘솔), Ctrl+Shift+C (요소 검사)
         if (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
             e.preventDefault();
             e.stopPropagation();
             return false;
         }
 
-        // Mac 사용자용 Cmd+Option+I / Cmd+Option+J / Cmd+Option+C
         if (e.metaKey && e.altKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) {
             e.preventDefault();
             e.stopPropagation();
             return false;
         }
 
-        // Ctrl+U 또는 Cmd+U (소스 보기 차단)
         if ((e.ctrlKey || e.metaKey) && e.keyCode === 85) {
             e.preventDefault();
             e.stopPropagation();
             return false;
         }
 
-        // Ctrl+S 또는 Cmd+S (페이지 저장 차단)
         if ((e.ctrlKey || e.metaKey) && e.keyCode === 83) {
             e.preventDefault();
             e.stopPropagation();
@@ -488,7 +625,6 @@
         }
     }, false);
 
-    // 2. 개발자 도구가 열렸을 때 무한 디버거(debugger)로 디버깅 방해
     setInterval(function() {
         (function() {
             function detectDevTools(level) {
@@ -565,7 +701,7 @@
         { 
             hanja: '七', mean: '일곱 칠', busu: '一 (한 일)', stroke: '2획',
             words: [
-                { word: '七月 (칠월)', mean: '7월' },
+                { word: '칠月 (칠월)', mean: '7월' },
                 { word: '七日 (칠일)', mean: '7일 또는 이레' },
                 { word: '三七日 (삼칠일)', mean: '사후 또는 출생 후 21일째' }
             ],
@@ -774,7 +910,7 @@
     let currentIdx = 0;
     let writerInstance = null;
 
-    // 1. HanziWriter 획순 설정 (자동 재생 제거)
+    // 1. HanziWriter 획순 설정
     function renderHanziWriter(character) {
         const targetDiv = document.getElementById('hanzi-writer-target');
         const errorMsg = document.getElementById('error-msg');
@@ -802,7 +938,6 @@
         }
     }
 
-    // 획순보기 버튼을 눌렀을 때만 애니메이션 실행
     function replayStrokeAnimation() {
         if (writerInstance) {
             writerInstance.animateCharacter();
