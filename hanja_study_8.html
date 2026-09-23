@@ -445,12 +445,19 @@
             line-height: 1.3;
         }
 
-        /* 📱 모바일 전용 반응형 스타일 */
+/* 📱 모바일 반응형 (화면 너비 768px 이하) */
+
        @media (max-width: 768px) {
             .word-grid {
-                grid-template-columns: repeat(5, minmax(0, 1fr)); /* 모바일: 한 줄 5개씩 2줄 */
-                gap: 5px;
-                max-height: 90px;
+            grid-template-columns: repeat(5, minmax(0, 1fr)); /* 한 줄 5개씩 */
+            gap: 6px;
+            max-height: 110px; /* 높이를 90px -> 110px로 늘려 2번째 줄 잘림 방지 */
+            padding: 8px 6px;  /* 모바일 상하좌우 여백 최적화 */
+            overflow-y: auto;
+            }
+             .word-chip {
+            padding: 8px 0;    /* 모바일에서 터치하기 편하도록 버튼 세로 크기 조정 */
+            font-size: 0.9em;  /* 폰트 크기 최적화 */
             }
             body {
                 padding: 10px 5px 70px 5px;
