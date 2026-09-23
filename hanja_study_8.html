@@ -152,32 +152,39 @@
         }
 
         /* [PC 전용] 한자 선택 스크롤 목록 (한 줄 10개씩 2줄 = 총 20개 노출) */
+        /* PC 기본: 한 줄에 10개씩 딱 맞게 자동 조율 */
         .word-grid {
-            display: grid;
-            grid-template-columns: repeat(10, 1fr); /* PC: 10열 */
-            gap: 8px;
-            margin-bottom: 20px;
-            max-height: 80px; /* 2줄 높이에 맞춰 고정 및 스크롤 */
-            overflow-y: auto;
-            padding: 8px;
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            background: #f7fafc;
+        display: grid;
+        grid-template-columns: repeat(10, minmax(0, 1fr)); /* minmax(0, 1fr)로 요소 삐져나침 방지 */
+        gap: 6px; /* 버튼 간격을 살짝 줄여 10개가 여유 있게 들어가도록 수정 */
+        margin-bottom: 20px;
+        max-height: 90px; /* 2줄 높이에 맞춰 스크롤 생성 */
+        overflow-y: auto;
+        padding: 8px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: #f7fafc;
+        box-sizing: border-box;
         }
-
+       
         .word-chip {
-            padding: 6px 0;
-            background: #fff;
-            border: 1px solid #cbd5e0;
-            border-radius: 6px;
-            cursor: pointer;
-            text-align: center;
-            font-size: 1em;
-            font-weight: bold;
-            transition: all 0.2s;
-            user-select: none;
+        padding: 6px 0;
+        background: #fff;
+        border: 1px solid #cbd5e0;
+        border-radius: 6px;
+        cursor: pointer;
+        text-align: center;
+        font-size: 0.95em; /* 글자 크기 미세 조정으로 깨짐 방지 */
+        font-weight: bold;
+        transition: all 0.2s;
+        user-select: none;
+        overflow: hidden; /* 버튼 밖으로 글자 튀어나감 방지 */
+        text-overflow: ellipsis;
+        white-space: nowrap;
         }
 
+
+        
         .word-chip.active {
             background: var(--primary-color);
             color: #fff;
@@ -439,7 +446,12 @@
         }
 
         /* 📱 모바일 전용 반응형 스타일 */
-        @media (max-width: 768px) {
+       @media (max-width: 768px) {
+            .word-grid {
+                grid-template-columns: repeat(5, minmax(0, 1fr)); /* 모바일: 한 줄 5개씩 2줄 */
+                gap: 5px;
+                max-height: 90px;
+            }
             body {
                 padding: 10px 5px 70px 5px;
             }
@@ -460,6 +472,9 @@
                 padding: 6px 8px;
                 font-size: 0.78em;
             }
+
+            /* 📱 모바일 반응형 (화면 너비 768px 이하) */
+
             
             /* [모바일] 한자 선택 목록 (한 줄 5개씩 2줄 = 총 10개 노출) */
             .word-grid {
