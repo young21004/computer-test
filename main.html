@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터 세대별 소자 완벽 암기법!</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .perspective {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-white min-h-screen font-sans pb-12">
+
+    <!-- Header -->
+    <header class="text-center py-8 bg-slate-800 border-b border-slate-700 shadow-lg">
+        <h1 class="text-3xl md:text-4xl font-extrabold text-amber-400 mb-2">
+            ⚡ 컴퓨터 세대별 소자 한 방에 암기하기 ⚡
+        </h1>
+        <p class="text-slate-300">시험에 무조건 나오는 1세대~5세대 주요 소자 완벽 정복!</p>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-4 mt-8 space-y-12">
+
+        <!-- Mnemonic Trick Section -->
+        <section class="bg-gradient-to-r from-amber-500/20 to-purple-600/20 border border-amber-500/30 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-2xl font-bold text-amber-300 mb-4 flex items-center gap-2">
+                <i class="fa-solid fa-brain"></i> 꿀잼 마법의 암기 공식!
+            </h2>
+            <div class="bg-slate-800/80 p-5 rounded-xl border border-slate-700">
+                <p class="text-lg md:text-xl font-bold text-center text-white mb-3">
+                    <span class="text-amber-400 font-extrabold text-2xl">[진]</span>짜 
+                    <span class="text-sky-400 font-extrabold text-2xl">[트]</span> 
+                    <span class="text-emerald-400 font-extrabold text-2xl">[집]</span>좀 
+                    <span class="text-purple-400 font-extrabold text-2xl">[고]</span>만 잡아라 
+                    <span class="text-rose-400 font-extrabold text-2xl">[초]</span>보야!
+                </p>
+                <div class="grid grid-cols-5 gap-2 text-center text-xs md:text-sm font-semibold mt-4 pt-4 border-t border-slate-700">
+                    <div class="text-amber-400">1세대<br><b>진</b>공관</div>
+                    <div class="text-sky-400">2세대<br><b>트</b>랜지스터</div>
+                    <div class="text-emerald-400">3세대<br><b>집</b>적회로(IC)</div>
+                    <div class="text-purple-400">4세대<br><b>고</b>밀도(LSI)</div>
+                    <div class="text-rose-400">5세대<br><b>초</b>고밀도(VLSI)</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Generation Cards Section -->
+        <section>
+            <h2 class="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-layer-group text-sky-400"></i> 세대별 상세 카드 (클릭하여 뒤집기)
+            </h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6" id="cardContainer">
+                <!-- Cards rendered by JS -->
+            </div>
+        </section>
+
+        <!-- Interactive Quiz Game Section -->
+        <section class="bg-slate-800 border border-slate-700 rounded-2xl p-6 shadow-xl">
+            <h2 class="text-2xl font-bold text-emerald-400 mb-2 flex items-center gap-2">
+                <i class="fa-solid fa-gamepad"></i> 10초 스피드 암기 퀴즈
+            </h2>
+            <p class="text-slate-400 text-sm mb-6">문제를 보고 알맞은 소자를 선택하세요!</p>
+
+            <div id="quizBox" class="bg-slate-900 p-6 rounded-xl border border-slate-700 text-center">
+                <div id="quizQuestion" class="text-xl font-bold mb-6 text-slate-100">
+                    게임을 시작하려면 아래 버튼을 누르세요!
+                </div>
+
+                <div id="quizOptions" class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-6 hidden">
+                    <!-- Options inserted by JS -->
+                </div>
+
+                <div id="quizScore" class="text-sm font-bold text-amber-400 mb-4 hidden">
+                    점수: <span id="scoreValue">0</span> / 5
+                </div>
+
+                <button id="startBtn" onclick="startQuiz()" class="bg-amber-500 hover:bg-amber-600 text-slate-900 font-bold px-8 py-3 rounded-xl transition shadow-lg text-lg">
+                    퀴즈 시작하기 🚀
+                </button>
+            </div>
+        </section>
+
+    </main>
+
+    <script>
+        const genData = [
+            {
+                gen: "1세대",
+                element: "진공관",
+                en: "Vacuum Tube",
+                color: "amber",
+                icon: "fa-lightbulb",
+                desc: "전구처럼 생김! 크고 뜨겁고 전기를 많이 먹음.",
+                story: "[진]짜 전구 같이 생긴 거!"
+            },
+            {
+                gen: "2세대",
+                element: "트랜지스터",
+                en: "Transistor (TR)",
+                color: "sky",
+                icon: "fa-microchip",
+                desc: "진공관보다 작고 빨라짐. 현대 전자제품의 혁명!",
+                story: "[트]러블 없이 소형화 성공!"
+            },
+            {
+                gen: "3세대",
+                element: "집적회로",
+                en: "IC (Integrated Circuit)",
+                color: "emerald",
+                icon: "fa-border-all",
+                desc: "트랜지스터 수백 개를 하나의 칩에 모아서 [집]어넣음!",
+                story: "한곳에 모아서 [집]적시킴!"
+            },
+            {
+                gen: "4세대",
+                element: "고밀도 집적회로",
+                en: "LSI (Large Scale)",
+                color: "purple",
+                icon: "fa-boxes-stacked",
+                desc: "수천~수만 개 회로를 빽빽하게 [고]밀도로 모음.",
+                story: "[고]성능 미니컴퓨터시대!"
+            },
+            {
+                gen: "5세대",
+                element: "초고밀도 집적회로",
+                en: "VLSI / ULSI",
+                color: "rose",
+                icon: "fa-atom",
+                desc: "수십만~수백만 개 집어넣음. AI 및 인공지능 시대!",
+                story: "[초]대박 정밀한 초고밀도!"
+            }
+        ];
+
+        // Render Cards
+        const cardContainer = document.getElementById('cardContainer');
+        genData.forEach((d) => {
+            const cardHTML = `
+                <div class="perspective h-48 cursor-pointer" onclick="flipCard(this)">
+                    <div class="card-inner relative w-full h-full transform-style-3d transition-transform duration-500 shadow-md rounded-xl">
+                        <!-- Front -->
+                        <div class="absolute inset-0 bg-slate-800 border-2 border-${d.color}-500/50 rounded-xl p-4 flex flex-col justify-between items-center text-center backface-hidden">
+                            <span class="text-xs font-extrabold uppercase tracking-wider text-${d.color}-400 bg-${d.color}-500/10 px-3 py-1 rounded-full border border-${d.color}-500/30">
+                                ${d.gen}
+                            </span>
+                            <i class="fa-solid ${d.icon} text-4xl text-${d.color}-400 my-2"></i>
+                            <h3 class="text-2xl font-black text-white">${d.element}</h3>
+                            <p class="text-xs text-slate-400">클릭해서 설명 보기 🔄</p>
+                        </div>
+                        <!-- Back -->
+                        <div class="absolute inset-0 bg-slate-800 border-2 border-${d.color}-400 rounded-xl p-4 flex flex-col justify-center items-center text-center rotate-y-180 backface-hidden">
+                            <h4 class="text-lg font-bold text-${d.color}-400 mb-1">${d.element} (${d.en})</h4>
+                            <p class="text-sm text-slate-200 mb-2">${d.desc}</p>
+                            <span class="text-xs text-amber-300 font-semibold bg-amber-500/10 px-2 py-1 rounded">
+                                💡 암기 팁: ${d.story}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            `;
+            cardContainer.innerHTML += cardHTML;
+        });
+
+        function flipCard(cardElem) {
+            const inner = cardElem.querySelector('.card-inner');
+            inner.classList.toggle('rotate-y-180');
+        }
+
+        // Quiz Logic
+        let currentQuizIndex = 0;
+        let score = 0;
+        let shuffledData = [];
+
+        function startQuiz() {
+            score = 0;
+            currentQuizIndex = 0;
+            shuffledData = [...genData].sort(() => Math.random() - 0.5);
+            
+            document.getElementById('startBtn').classList.add('hidden');
+            document.getElementById('quizOptions').classList.remove('hidden');
+            document.getElementById('quizScore').classList.remove('hidden');
+            document.getElementById('scoreValue').innerText = score;
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            if (currentQuizIndex >= shuffledData.length) {
+                // Finish Quiz
+                document.getElementById('quizQuestion').innerHTML = `🎉 퀴즈 완료! 최종 점수: <span class="text-amber-400 font-extrabold">${score} / 5</span>`;
+                document.getElementById('quizOptions').classList.add('hidden');
+                document.getElementById('startBtn').innerText = "다시 도전하기 🔄";
+                document.getElementById('startBtn').classList.remove('hidden');
+                return;
+            }
+
+            const current = shuffledData[currentQuizIndex];
+            document.getElementById('quizQuestion').innerText = `[Q${currentQuizIndex + 1}] '${current.gen}' 컴퓨터의 주요 기본 소자는 무엇일까요?`;
+
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+
+            // Generate choices
+            const choices = [...genData].sort(() => Math.random() - 0.5);
+            choices.forEach(c => {
+                const btn = document.createElement('button');
+                btn.className = "bg-slate-800 hover:bg-slate-700 border border-slate-600 text-white font-semibold py-3 px-4 rounded-xl transition text-left flex items-center justify-between";
+                btn.innerHTML = `<span>${c.element}</span> <i class="fa-solid fa-chevron-right text-xs text-slate-500"></i>`;
+                btn.onclick = () => checkAnswer(c.element, current.element);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                score++;
+                alert("⭕ 정답입니다!");
+            } else {
+                alert(`❌ 아쉽네요! 정답은 [${correct}] 입니다.`);
+            }
+            document.getElementById('scoreValue').innerText = score;
+            currentQuizIndex++;
+            showQuestion();
+        }
+    </script>
+</body>
+</html>

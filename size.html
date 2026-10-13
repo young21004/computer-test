@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터 용량 단위 완벽 암기 앱</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter & Noto Sans KR -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.7);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .glow-hover:hover {
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4);
+            transform: translateY(-3px);
+        }
+        .story-badge {
+            transition: all 0.3s ease;
+        }
+        .story-badge:hover {
+            transform: scale(1.08);
+        }
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 8px rgba(129, 140, 248, 0.6)); }
+            50% { filter: drop-shadow(0 0 18px rgba(129, 140, 248, 0.9)); }
+        }
+        .animate-pulse-glow {
+            animation: pulseGlow 2.5s infinite;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 pb-20">
+
+    <header class="max-w-5xl mx-auto text-center my-6 md:my-10">
+        <div class="inline-block px-4 py-1.5 bg-indigo-500/20 rounded-full text-indigo-300 font-semibold text-sm mb-3 border border-indigo-500/30">
+            ⚡ 1초만에 외우는 기적의 암기법
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-indigo-300 to-purple-400 mb-4">
+            컴퓨터 용량 단위 암기 마스터
+        </h1>
+        <p class="text-gray-300 text-sm md:text-base max-w-2xl mx-auto">
+            Byte부터 YottaByte까지! 재밌는 연상 스토리와 대화형 학습 툴로 컴퓨터 용량 단위를 평생 잊지 않게 만들어 드립니다.
+        </p>
+    </header>
+
+    <section class="max-w-5xl mx-auto mb-10">
+        <div class="glass-card rounded-3xl p-5 md:p-8 shadow-2xl relative overflow-hidden">
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-purple-600/20 rounded-full blur-3xl pointer-events-none"></div>
+            
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2 text-indigo-300">
+                    <i class="fa-solid fa-lightbulb text-amber-400"></i> 마법의 연상 문장
+                </h2>
+                <span class="text-xs text-gray-400 bg-slate-800/80 px-3 py-1 rounded-full border border-slate-700">
+                    각 단어를 클릭하면 상세 단위를 확인할 수 있어요!
+                </span>
+            </div>
+
+            <!-- Mnemonic Phrase Interactive Cards -->
+            <div class="p-4 md:p-6 bg-slate-900/80 rounded-2xl border border-indigo-500/30 mb-8">
+                <div class="text-center mb-4">
+                    <p class="text-lg md:text-2xl font-extrabold text-white leading-relaxed">
+                        "<span class="text-amber-400 underline decoration-amber-400 decoration-2">바</span>쁜 
+                        <span class="text-emerald-400 underline decoration-emerald-400 decoration-2">킬러</span>는 
+                        <span class="text-cyan-400 underline decoration-cyan-400 decoration-2">메</span>일을 
+                        <span class="text-blue-400 underline decoration-blue-400 decoration-2">기</span>억하려고 
+                        <span class="text-purple-400 underline decoration-purple-400 decoration-2">테</span>이블을 펴고 
+                        <span class="text-pink-400 underline decoration-pink-400 decoration-2">페</span>이스북에 
+                        <span class="text-rose-400 underline decoration-rose-400 decoration-2">엑</span>셀을 
+                        <span class="text-orange-400 underline decoration-orange-400 decoration-2">제</span>출하려 
+                        <span class="text-yellow-400 underline decoration-yellow-400 decoration-2">요</span>청했다!"
+                    </p>
+                </div>
+
+                <!-- Interactive flow nodes -->
+                <div class="grid grid-cols-3 sm:grid-cols-5 md:grid-cols-9 gap-2 mt-6">
+                    <button onclick="highlightUnit('B')" class="story-badge bg-amber-500/20 hover:bg-amber-500/30 border border-amber-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-amber-300 font-semibold mb-1">바</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Byte</div>
+                        <div class="text-[10px] text-gray-400 mt-1">B</div>
+                    </button>
+                    <button onclick="highlightUnit('KB')" class="story-badge bg-emerald-500/20 hover:bg-emerald-500/30 border border-emerald-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-emerald-300 font-semibold mb-1">킬러</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Kilo</div>
+                        <div class="text-[10px] text-gray-400 mt-1">KB</div>
+                    </button>
+                    <button onclick="highlightUnit('MB')" class="story-badge bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-cyan-300 font-semibold mb-1">메(일)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Mega</div>
+                        <div class="text-[10px] text-gray-400 mt-1">MB</div>
+                    </button>
+                    <button onclick="highlightUnit('GB')" class="story-badge bg-blue-500/20 hover:bg-blue-500/30 border border-blue-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-blue-300 font-semibold mb-1">기(억)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Giga</div>
+                        <div class="text-[10px] text-gray-400 mt-1">GB</div>
+                    </button>
+                    <button onclick="highlightUnit('TB')" class="story-badge bg-purple-500/20 hover:bg-purple-500/30 border border-purple-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-purple-300 font-semibold mb-1">테(이블)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Tera</div>
+                        <div class="text-[10px] text-gray-400 mt-1">TB</div>
+                    </button>
+                    <button onclick="highlightUnit('PB')" class="story-badge bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-pink-300 font-semibold mb-1">페(북)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Peta</div>
+                        <div class="text-[10px] text-gray-400 mt-1">PB</div>
+                    </button>
+                    <button onclick="highlightUnit('EB')" class="story-badge bg-rose-500/20 hover:bg-rose-500/30 border border-rose-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-rose-300 font-semibold mb-1">엑(셀)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Exa</div>
+                        <div class="text-[10px] text-gray-400 mt-1">EB</div>
+                    </button>
+                    <button onclick="highlightUnit('ZB')" class="story-badge bg-orange-500/20 hover:bg-orange-500/30 border border-orange-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-orange-300 font-semibold mb-1">제(출)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Zetta</div>
+                        <div class="text-[10px] text-gray-400 mt-1">ZB</div>
+                    </button>
+                    <button onclick="highlightUnit('YB')" class="story-badge bg-yellow-500/20 hover:bg-yellow-500/30 border border-yellow-500/40 p-2.5 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-yellow-300 font-semibold mb-1">요(청)</div>
+                        <div class="text-base font-black text-white group-hover:scale-110 transition-transform">Yotta</div>
+                        <div class="text-[10px] text-gray-400 mt-1">YB</div>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Key concept explanation -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 flex items-start gap-3">
+                    <div class="p-2.5 bg-indigo-500/20 text-indigo-400 rounded-lg text-lg"><i class="fa-solid fa-calculator"></i></div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">각 단위는 몇 배 차이일까요?</h4>
+                        <p class="text-gray-300">
+                            컴퓨터는 2진법을 사용하므로 한 단계 올라갈 때마다 <span class="text-amber-300 font-bold">1,024배(2¹⁰)</span> 증가합니다! (일상적으로는 약 1,000배로 계산하기도 해요.)
+                        </p>
+                    </div>
+                </div>
+                <div class="bg-slate-800/50 p-4 rounded-xl border border-slate-700/60 flex items-start gap-3">
+                    <div class="p-2.5 bg-purple-500/20 text-purple-400 rounded-lg text-lg"><i class="fa-solid fa-microchip"></i></div>
+                    <div>
+                        <h4 class="font-bold text-white mb-1">Bit와 Byte의 차이</h4>
+                        <p class="text-gray-300">
+                            가장 작은 단위는 <span class="text-purple-300 font-bold">Bit(0 또는 1)</span>이며, <span class="text-purple-300 font-bold">8 Bit = 1 Byte</span>가 되어 영문자 1글자를 저장할 수 있습니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto mb-8">
+        <div class="flex border-b border-slate-700 justify-center gap-2 md:gap-4">
+            <button id="tab-cards-btn" onclick="switchTab('cards')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-indigo-500 text-indigo-400 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-layer-group"></i> 단위 카드로 공부하기
+            </button>
+            <button id="tab-calc-btn" onclick="switchTab('calc')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-arrow-right-arrow-left"></i> 실시간 용량 계산기
+            </button>
+            <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center gap-2">
+                <i class="fa-solid fa-gamepad"></i> 암기 스피드 퀴즈
+            </button>
+        </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto">
+        <div id="tab-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            <!-- Cards will be populated by JavaScript -->
+        </div>
+
+        <div id="tab-calc" class="hidden glass-card p-6 md:p-8 rounded-3xl max-w-2xl mx-auto">
+            <h3 class="text-xl font-bold text-white mb-6 flex items-center gap-2">
+                <i class="fa-solid fa-calculator text-indigo-400"></i> 스마트 용량 단위 변환기
+            </h3>
+            <div class="space-y-5">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">값 입력</label>
+                    <input type="number" id="calc-input-value" value="1" min="0" oninput="calculateUnits()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-lg focus:outline-none focus:border-indigo-500">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-300 mb-2">기준 단위 선택</label>
+                    <select id="calc-unit-select" onchange="calculateUnits()" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white text-lg focus:outline-none focus:border-indigo-500">
+                        <option value="B">Byte (바)</option>
+                        <option value="KB">KB - KiloByte (킬러)</option>
+                        <option value="MB">MB - MegaByte (메일)</option>
+                        <option value="GB" selected>GB - GigaByte (기억)</option>
+                        <option value="TB">TB - TeraByte (테이블)</option>
+                        <option value="PB">PB - PetaByte (페이스북)</option>
+                        <option value="EB">EB - ExaByte (엑셀)</option>
+                        <option value="ZB">ZB - ZettaByte (제출)</option>
+                        <option value="YB">YB - YottaByte (요청)</option>
+                    </select>
+                </div>
+
+                <div class="pt-4 border-t border-slate-700">
+                    <h4 class="text-sm font-bold text-indigo-300 mb-3">변환 결과 (1024 기준)</h4>
+                    <div id="calc-results" class="space-y-2 text-sm bg-slate-900/60 p-4 rounded-xl border border-slate-800">
+                        <!-- Calculated results will appear here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="tab-quiz" class="hidden glass-card p-6 md:p-8 rounded-3xl max-w-xl mx-auto text-center">
+            <div id="quiz-start-screen">
+                <div class="w-20 h-20 bg-indigo-500/20 text-indigo-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">암기 스피드 퀴즈</h3>
+                <p class="text-gray-300 text-sm mb-6">
+                    연상어와 용량 단위를 맞춰보세요! 5문제를 빠르게 풀어 최고 기록에 도전하세요.
+                </p>
+                <button onclick="startQuiz()" class="px-8 py-3.5 bg-gradient-to-r from-indigo-500 to-purple-600 hover:from-indigo-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105">
+                    퀴즈 시작하기 🚀
+                </button>
+            </div>
+
+            <div id="quiz-play-screen" class="hidden">
+                <div class="flex justify-between items-center mb-6 text-sm text-gray-400">
+                    <span>문제 <strong id="quiz-current-num" class="text-indigo-400">1</strong> / 5</span>
+                    <span>점수: <strong id="quiz-score" class="text-emerald-400">0</strong>점</span>
+                </div>
+
+                <div class="bg-slate-900/80 p-6 rounded-2xl border border-indigo-500/30 mb-6">
+                    <div class="text-xs text-indigo-300 font-semibold mb-2" id="quiz-category">연상어 문제</div>
+                    <div class="text-2xl font-black text-white" id="quiz-question-text">"기억하려고"에 해당하는 단위는?</div>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-2 gap-3">
+                    <!-- Option buttons dynamically generated -->
+                </div>
+            </div>
+
+            <div id="quiz-result-screen" class="hidden">
+                <div class="text-5xl mb-4">🎉</div>
+                <h3 class="text-2xl font-bold text-white mb-2">퀴즈 완료!</h3>
+                <p class="text-gray-300 mb-6">당신의 최종 점수는 <span id="quiz-final-score" class="text-2xl font-black text-emerald-400">0</span>점 입니다.</p>
+                <button onclick="startQuiz()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl border border-slate-600">
+                    다시 도전하기
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data Structure for Storage Units
+        const storageUnits = [
+            {
+                code: 'B',
+                name: 'Byte (바이트)',
+                mnemonic: '바',
+                phrasePart: '바쁜',
+                icon: 'fa-font',
+                color: 'amber',
+                bgColor: 'from-amber-500/20 to-amber-700/10',
+                borderColor: 'border-amber-500/40',
+                textColor: 'text-amber-400',
+                size: '1 Byte',
+                example: '영문자 1글자, 숫자 1개 저장'
+            },
+            {
+                code: 'KB',
+                name: 'KiloByte (킬로바이트)',
+                mnemonic: '킬러',
+                phrasePart: '킬러는',
+                icon: 'fa-file-lines',
+                color: 'emerald',
+                bgColor: 'from-emerald-500/20 to-emerald-700/10',
+                borderColor: 'border-emerald-500/40',
+                textColor: 'text-emerald-400',
+                size: '1,024 Bytes',
+                example: '짧은 텍스트 문서 1장'
+            },
+            {
+                code: 'MB',
+                name: 'MegaByte (메가바이트)',
+                mnemonic: '메',
+                phrasePart: '메일을',
+                icon: 'fa-envelope',
+                color: 'cyan',
+                bgColor: 'from-cyan-500/20 to-cyan-700/10',
+                borderColor: 'border-cyan-500/40',
+                textColor: 'text-cyan-400',
+                size: '1,024 KB',
+                example: 'MP3 음악 1곡, 고화질 사진 1장'
+            },
+            {
+                code: 'GB',
+                name: 'GigaByte (기가바이트)',
+                mnemonic: '기',
+                phrasePart: '기억하려고',
+                icon: 'fa-film',
+                color: 'blue',
+                bgColor: 'from-blue-500/20 to-blue-700/10',
+                borderColor: 'border-blue-500/40',
+                textColor: 'text-blue-400',
+                size: '1,024 MB',
+                example: 'HD 영화 1편 (약 1.5GB~2GB)'
+            },
+            {
+                code: 'TB',
+                name: 'TeraByte (테라바이트)',
+                mnemonic: '테',
+                phrasePart: '테이블을',
+                icon: 'fa-hard-drive',
+                color: 'purple',
+                bgColor: 'from-purple-500/20 to-purple-700/10',
+                borderColor: 'border-purple-500/40',
+                textColor: 'text-purple-400',
+                size: '1,024 GB',
+                example: '영화 약 500편 저장 가능한 외장하드'
+            },
+            {
+                code: 'PB',
+                name: 'PetaByte (페타바이트)',
+                mnemonic: '페',
+                phrasePart: '페이스북에',
+                icon: 'fa-server',
+                color: 'pink',
+                bgColor: 'from-pink-500/20 to-pink-700/10',
+                borderColor: 'border-pink-500/40',
+                textColor: 'text-pink-400',
+                size: '1,024 TB',
+                example: '대형 데이터센터, 4K 영화 약 25만 편'
+            },
+            {
+                code: 'EB',
+                name: 'ExaByte (엑사바이트)',
+                mnemonic: '엑',
+                phrasePart: '엑셀을',
+                icon: 'fa-network-wired',
+                color: 'rose',
+                bgColor: 'from-rose-500/20 to-rose-700/10',
+                borderColor: 'border-rose-500/40',
+                textColor: 'text-rose-400',
+                size: '1,024 PB',
+                example: '전 세계 인터넷 일일 트래픽 수준'
+            },
+            {
+                code: 'ZB',
+                name: 'ZettaByte (제타바이트)',
+                mnemonic: '제',
+                phrasePart: '제출하려',
+                icon: 'fa-cloud',
+                color: 'orange',
+                bgColor: 'from-orange-500/20 to-orange-700/10',
+                borderColor: 'border-orange-500/40',
+                textColor: 'text-orange-400',
+                size: '1,024 EB',
+                example: '전 세계 글로벌 데이터 총량 수준'
+            },
+            {
+                code: 'YB',
+                name: 'YottaByte (요타바이트)',
+                mnemonic: '요',
+                phrasePart: '요청했다',
+                icon: 'fa-globe',
+                color: 'yellow',
+                bgColor: 'from-yellow-500/20 to-yellow-700/10',
+                borderColor: 'border-yellow-500/40',
+                textColor: 'text-yellow-400',
+                size: '1,024 ZB',
+                example: '인류가 상상할 수 있는 극대용량 단위'
+            }
+        ];
+
+        // Render Cards
+        function renderCards() {
+            const container = document.getElementById('tab-cards');
+            container.innerHTML = '';
+
+            storageUnits.forEach((unit) => {
+                const card = document.createElement('div');
+                card.id = `card-${unit.code}`;
+                card.className = `glass-card bg-gradient-to-br ${unit.bgColor} border ${unit.borderColor} p-6 rounded-2xl glow-hover transition-all duration-300 relative overflow-hidden`;
+                
+                card.innerHTML = `
+                    <div class="flex justify-between items-start mb-4">
+                        <div class="px-3 py-1 bg-slate-900/80 rounded-full text-xs font-bold ${unit.textColor} border border-slate-700">
+                            연상: <span class="text-white">${unit.phrasePart}</span> (${unit.mnemonic})
+                        </div>
+                        <i class="fa-solid ${unit.icon} text-2xl ${unit.textColor}"></i>
+                    </div>
+                    
+                    <h3 class="text-2xl font-black text-white mb-1">${unit.code}</h3>
+                    <div class="text-sm text-gray-300 font-semibold mb-3">${unit.name}</div>
+                    
+                    <div class="space-y-2 text-xs text-gray-300 bg-slate-900/60 p-3 rounded-xl border border-slate-800">
+                        <div><strong class="text-gray-400">크기:</strong> ${unit.size}</div>
+                        <div><strong class="text-gray-400">실제 예시:</strong> ${unit.example}</div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Highlight unit when clicked in mnemonic section
+        function highlightUnit(code) {
+            switchTab('cards');
+            const targetCard = document.getElementById(`card-${code}`);
+            if (targetCard) {
+                targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                targetCard.classList.add('ring-4', 'ring-indigo-400', 'scale-105');
+                setTimeout(() => {
+                    targetCard.classList.remove('ring-4', 'ring-indigo-400', 'scale-105');
+                }, 1500);
+            }
+        }
+
+        // Tab Switcher
+        function switchTab(tabName) {
+            const tabs = ['cards', 'calc', 'quiz'];
+            tabs.forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}-btn`);
+                btn.classList.remove('border-indigo-500', 'text-indigo-400');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}-btn`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-400');
+            activeBtn.classList.add('border-indigo-500', 'text-indigo-400');
+
+            if (tabName === 'calc') {
+                calculateUnits();
+            }
+        }
+
+        // Unit Calculator
+        function calculateUnits() {
+            const val = parseFloat(document.getElementById('calc-input-value').value) || 0;
+            const unitCode = document.getElementById('calc-unit-select').value;
+            const resultsContainer = document.getElementById('calc-results');
+
+            const baseIndex = storageUnits.findIndex(u => u.code === unitCode);
+            if (baseIndex === -1) return;
+
+            let html = '';
+            storageUnits.forEach((u, idx) => {
+                const diff = idx - baseIndex;
+                let convertedVal = val * Math.pow(1024, -diff);
+                let displayVal = convertedVal >= 1 ? convertedVal.toLocaleString(undefined, { maximumFractionDigits: 4 }) : convertedVal.toExponential(4);
+
+                const isCurrent = idx === baseIndex;
+                html += `
+                    <div class="flex justify-between items-center ${isCurrent ? 'text-indigo-300 font-bold bg-indigo-500/20 p-2 rounded-lg' : 'text-gray-300'}">
+                        <span>${u.name} (${u.code})</span>
+                        <span class="font-mono">${displayVal} ${u.code}</span>
+                    </div>
+                `;
+            });
+
+            resultsContainer.innerHTML = html;
+        }
+
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-play-screen').classList.remove('hidden');
+
+            // Generate questions
+            quizQuestions = [...storageUnits]
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 5)
+                .map(unit => {
+                    const isMnemonicQuestion = Math.random() > 0.5;
+                    const questionText = isMnemonicQuestion 
+                        ? `연상어 "<span class="text-amber-300">${unit.phrasePart}</span>"에 해당하는 용량 단위는?`
+                        : `단위 <span class="text-indigo-300">${unit.code} (${unit.name})</span>의 연상 단어는?`;
+                    
+                    // Options
+                    let options = [];
+                    if (isMnemonicQuestion) {
+                        options = [unit.code];
+                        while(options.length < 4) {
+                            const randomUnit = storageUnits[Math.floor(Math.random() * storageUnits.length)].code;
+                            if (!options.includes(randomUnit)) options.push(randomUnit);
+                        }
+                    } else {
+                        options = [unit.phrasePart];
+                        while(options.length < 4) {
+                            const randomPhrase = storageUnits[Math.floor(Math.random() * storageUnits.length)].phrasePart;
+                            if (!options.includes(randomPhrase)) options.push(randomPhrase);
+                        }
+                    }
+
+                    return {
+                        question: questionText,
+                        answer: isMnemonicQuestion ? unit.code : unit.phrasePart,
+                        options: options.sort(() => 0.5 - Math.random())
+                    };
+                });
+
+            currentQuizIndex = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-current-num').innerText = currentQuizIndex + 1;
+            document.getElementById('quiz-score').innerText = score;
+            document.getElementById('quiz-question-text').innerHTML = q.question;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full py-3 px-4 bg-slate-800 hover:bg-indigo-600 text-white font-bold rounded-xl border border-slate-700 transition-all text-base';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(opt, q.answer);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                score += 20;
+            }
+
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-play-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = score;
+        }
+
+        // Initialize App
+        window.onload = function() {
+            renderCards();
+            calculateUnits();
+        };
+    </script>
+</body>
+</html>

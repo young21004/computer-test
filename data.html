@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>자료 표현 단위 완벽 암기 마스터</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Noto Sans KR Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Noto Sans KR', 'sans-serif'],
+                    },
+                    colors: {
+                        pastel: {
+                            purple: '#A855F7',
+                            pink: '#EC4899',
+                            blue: '#3B82F6',
+                            emerald: '#10B981',
+                            amber: '#F59E0B'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Noto Sans KR', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+        }
+        .glass-card {
+            background: rgba(30, 41, 59, 0.75);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+        .story-btn {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .story-btn:hover {
+            transform: translateY(-4px) scale(1.03);
+            box-shadow: 0 10px 25px -5px rgba(168, 85, 247, 0.4);
+        }
+        .step-node {
+            transition: all 0.3s ease;
+        }
+        .step-node:hover {
+            transform: scale(1.02);
+        }
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: floatAnim 3s ease-in-out infinite;
+        }
+    </style>
+</head>
+<body class="p-3 md:p-6 pb-20">
+
+    <header class="max-w-5xl mx-auto text-center my-6 md:my-10">
+        <div class="inline-block px-4 py-1.5 bg-pink-500/20 rounded-full text-pink-300 font-semibold text-sm mb-3 border border-pink-500/30 shadow-lg">
+            ✨ 컴퓨터 자격증 필수 암기 공식
+        </div>
+        <h1 class="text-3xl md:text-5xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-pink-400 via-purple-300 to-indigo-400 mb-4">
+            자료 표현 단위 완벽 암기 마스터
+        </h1>
+        <p class="text-gray-300 text-sm md:text-base max-w-2xl mx-auto">
+            자료의 최소 단위인 <span class="text-pink-400 font-bold">Bit</span>부터 최상위 <span class="text-purple-400 font-bold">Database</span>까지! 재밌는 캐릭터 스토리로 단 1분 만에 암기해보세요.
+        </p>
+    </header>
+
+    <section class="max-w-5xl mx-auto mb-10">
+        <div class="glass-card rounded-3xl p-5 md:p-8 shadow-2xl relative overflow-hidden">
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+                <h2 class="text-xl md:text-2xl font-bold flex items-center gap-2 text-purple-300">
+                    <i class="fa-solid fa-face-grin-tears text-pink-400"></i> 마법의 연상 스토리
+                </h2>
+                <span class="text-xs text-gray-400 bg-slate-800/80 px-3 py-1 rounded-full border border-slate-700">
+                    버튼을 누르면 해당 단위 카드로 이동합니다!
+                </span>
+            </div>
+
+            <!-- Mnemonic Phrase Interactive Visual Block -->
+            <div class="p-5 md:p-7 bg-slate-900/90 rounded-2xl border border-purple-500/30 mb-8 relative">
+                <!-- Character Avatar visual -->
+                <div class="flex justify-center items-center mb-6 gap-3 flex-wrap">
+                    <div class="text-center p-3 bg-slate-800/80 rounded-2xl border border-pink-500/30 w-24 animate-float">
+                        <div class="text-3xl mb-1">🧢</div>
+                        <div class="text-xs font-bold text-pink-300">비니 쓴 사람</div>
+                    </div>
+                    <div class="text-gray-500 text-xl"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="text-center p-3 bg-slate-800/80 rounded-2xl border border-purple-500/30 w-24 animate-float" style="animation-delay: 0.5s;">
+                        <div class="text-3xl mb-1">💻</div>
+                        <div class="text-xs font-bold text-purple-300">바쁜 워드</div>
+                    </div>
+                    <div class="text-gray-500 text-xl"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="text-center p-3 bg-slate-800/80 rounded-2xl border border-indigo-500/30 w-24 animate-float" style="animation-delay: 1s;">
+                        <div class="text-3xl mb-1">💉</div>
+                        <div class="text-xs font-bold text-indigo-300">필러(레) 맞고</div>
+                    </div>
+                    <div class="text-gray-500 text-xl"><i class="fa-solid fa-arrow-right"></i></div>
+                    <div class="text-center p-3 bg-slate-800/80 rounded-2xl border border-emerald-500/30 w-28 animate-float" style="animation-delay: 1.5s;">
+                        <div class="text-3xl mb-1">💄</div>
+                        <div class="text-xs font-bold text-emerald-300">파운데이티션</div>
+                    </div>
+                </div>
+
+                <!-- Story Text Line -->
+                <div class="text-center mb-6">
+                    <p class="text-lg md:text-2xl font-extrabold text-white leading-relaxed">
+                        "<span class="text-pink-400 underline decoration-pink-400 decoration-2">비</span>
+                        <span class="text-pink-300 underline decoration-pink-300 decoration-2">니</span>는 
+                        <span class="text-purple-400 underline decoration-purple-400 decoration-2">바</span>쁜 
+                        <span class="text-purple-300 underline decoration-purple-300 decoration-2">워드</span>, 
+                        <span class="text-indigo-400 underline decoration-indigo-400 decoration-2">필</span>
+                        <span class="text-indigo-300 underline decoration-indigo-300 decoration-2">러(레)</span> 맞고 
+                        <span class="text-emerald-400 underline decoration-emerald-400 decoration-2">파</span>운
+                        <span class="text-emerald-300 underline decoration-emerald-300 decoration-2">데이티션</span> 발라야해서!"
+                    </p>
+                </div>
+
+                <!-- Clickable Interactive Sequence -->
+                <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-8 gap-2">
+                    <button onclick="highlightUnit('Bit')" class="story-btn bg-pink-500/20 border border-pink-500/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-pink-300 font-bold mb-1">비</div>
+                        <div class="text-sm font-black text-white">비트 (Bit)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">0 / 1</div>
+                    </button>
+                    <button onclick="highlightUnit('Nibble')" class="story-btn bg-pink-400/20 border border-pink-400/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-pink-200 font-bold mb-1">니</div>
+                        <div class="text-sm font-black text-white">니블 (Nibble)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">4 Bits</div>
+                    </button>
+                    <button onclick="highlightUnit('Byte')" class="story-btn bg-purple-500/20 border border-purple-500/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-purple-300 font-bold mb-1">바</div>
+                        <div class="text-sm font-black text-white">바이트 (Byte)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">8 Bits</div>
+                    </button>
+                    <button onclick="highlightUnit('Word')" class="story-btn bg-purple-400/20 border border-purple-400/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-purple-200 font-bold mb-1">워드</div>
+                        <div class="text-sm font-black text-white">워드 (Word)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">CPU 처리</div>
+                    </button>
+                    <button onclick="highlightUnit('Field')" class="story-btn bg-indigo-500/20 border border-indigo-500/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-indigo-300 font-bold mb-1">필</div>
+                        <div class="text-sm font-black text-white">필드 (Field)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">항목 (Item)</div>
+                    </button>
+                    <button onclick="highlightUnit('Record')" class="story-btn bg-indigo-400/20 border border-indigo-400/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-indigo-200 font-bold mb-1">러(레)</div>
+                        <div class="text-sm font-black text-white">레코드 (Record)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">필드 모음</div>
+                    </button>
+                    <button onclick="highlightUnit('File')" class="story-btn bg-emerald-500/20 border border-emerald-500/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-emerald-300 font-bold mb-1">파</div>
+                        <div class="text-sm font-black text-white">파일 (File)</div>
+                        <div class="text-[10px] text-gray-400 mt-1">레코드 모음</div>
+                    </button>
+                    <button onclick="highlightUnit('Database')" class="story-btn bg-emerald-400/20 border border-emerald-400/40 p-3 rounded-xl text-center group cursor-pointer">
+                        <div class="text-xs text-emerald-200 font-bold mb-1">데이티션</div>
+                        <div class="text-sm font-black text-white">데이터베이스</div>
+                        <div class="text-[10px] text-gray-400 mt-1">파일 모음</div>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="max-w-5xl mx-auto mb-8">
+        <div class="flex border-b border-slate-700 justify-center gap-2 md:gap-4 overflow-x-auto">
+            <button id="tab-cards-btn" onclick="switchTab('cards')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-pink-500 text-pink-400 transition-all flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-address-card"></i> 단위별 상세 카드
+            </button>
+            <button id="tab-hierarchy-btn" onclick="switchTab('hierarchy')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-sitemap"></i> 계층 피라미드
+            </button>
+            <button id="tab-quiz-btn" onclick="switchTab('quiz')" class="px-5 py-3 font-semibold text-sm md:text-base border-b-2 border-transparent text-gray-400 hover:text-gray-200 transition-all flex items-center gap-2 whitespace-nowrap">
+                <i class="fa-solid fa-gamepad"></i> 암기 스피드 퀴즈
+            </button>
+        </div>
+    </section>
+
+    <main class="max-w-5xl mx-auto">
+        <!-- TAB 1: Detail Cards -->
+        <div id="tab-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Dynamic Unit Cards JS rendered -->
+        </div>
+
+        <!-- TAB 2: Interactive Hierarchy View -->
+        <div id="tab-hierarchy" class="hidden glass-card p-6 md:p-8 rounded-3xl max-w-3xl mx-auto">
+            <h3 class="text-xl font-bold text-white mb-2 text-center flex items-center justify-center gap-2">
+                <i class="fa-solid fa-layer-group text-purple-400"></i> 자료 표현 단위의 크기 계층 (작은 단위 ➔ 큰 단위)
+            </h3>
+            <p class="text-center text-xs text-gray-400 mb-8">
+                하위 단위들이 모여 상위 단위를 구성하는 구조를 확인해보세요!
+            </p>
+
+            <div class="space-y-3" id="hierarchy-container">
+                <!-- Pyramid or Step items rendered via JS -->
+            </div>
+        </div>
+
+        <!-- TAB 3: Quiz Game -->
+        <div id="tab-quiz" class="hidden glass-card p-6 md:p-8 rounded-3xl max-w-xl mx-auto text-center">
+            <div id="quiz-start-screen">
+                <div class="w-20 h-20 bg-pink-500/20 text-pink-400 rounded-full flex items-center justify-center mx-auto mb-4 text-3xl">
+                    <i class="fa-solid fa-graduation-cap"></i>
+                </div>
+                <h3 class="text-2xl font-bold text-white mb-2">자료 단위 암기 퀴즈</h3>
+                <p class="text-gray-300 text-sm mb-6">
+                    연상 문장 매칭 문제와 크기 비교 문제를 풀어보세요!
+                </p>
+                <button onclick="startQuiz()" class="px-8 py-3.5 bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white font-bold rounded-xl shadow-lg transition-all transform hover:scale-105">
+                    퀴즈 시작하기 🚀
+                </button>
+            </div>
+
+            <div id="quiz-play-screen" class="hidden">
+                <div class="flex justify-between items-center mb-6 text-sm text-gray-400">
+                    <span>문제 <strong id="quiz-current-num" class="text-pink-400">1</strong> / 5</span>
+                    <span>점수: <strong id="quiz-score" class="text-emerald-400">0</strong>점</span>
+                </div>
+
+                <div class="bg-slate-900/90 p-6 rounded-2xl border border-pink-500/30 mb-6">
+                    <div class="text-xs text-pink-300 font-semibold mb-2" id="quiz-category">연상어 매칭</div>
+                    <div class="text-xl md:text-2xl font-black text-white" id="quiz-question-text">질문 영역</div>
+                </div>
+
+                <div id="quiz-options" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                    <!-- Dynamic Buttons -->
+                </div>
+            </div>
+
+            <div id="quiz-result-screen" class="hidden">
+                <div class="text-5xl mb-4">🏆</div>
+                <h3 class="text-2xl font-bold text-white mb-2">퀴즈 완료!</h3>
+                <p class="text-gray-300 mb-6">최종 점수: <span id="quiz-final-score" class="text-3xl font-black text-pink-400">0</span>점</p>
+                <button onclick="startQuiz()" class="px-6 py-3 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl border border-slate-600">
+                    다시 도전하기
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Data Structure for Representation Units
+        const dataUnits = [
+            {
+                code: 'Bit',
+                name: '비트 (Bit)',
+                mnemonicKey: '비',
+                phrasePart: '비니는',
+                level: 1,
+                sizeInfo: '0 또는 1 (1 Bit)',
+                icon: 'fa-cube',
+                color: 'pink',
+                bgGradient: 'from-pink-500/20 to-pink-700/10',
+                borderColor: 'border-pink-500/40',
+                textColor: 'text-pink-400',
+                description: '정보 표현의 최소 단위 (Binary Digit)'
+            },
+            {
+                code: 'Nibble',
+                name: '니블 (Nibble)',
+                mnemonicKey: '니',
+                phrasePart: '비니는',
+                level: 2,
+                sizeInfo: '4 Bits',
+                icon: 'fa-cubes',
+                color: 'pink',
+                bgGradient: 'from-pink-400/20 to-pink-600/10',
+                borderColor: 'border-pink-400/40',
+                textColor: 'text-pink-300',
+                description: '16진수 1자리를 표현하기 적합한 단위'
+            },
+            {
+                code: 'Byte',
+                name: '바이트 (Byte)',
+                mnemonicKey: '바',
+                phrasePart: '바쁜',
+                level: 3,
+                sizeInfo: '8 Bits (2 Nibbles)',
+                icon: 'fa-font',
+                color: 'purple',
+                bgGradient: 'from-purple-500/20 to-purple-700/10',
+                borderColor: 'border-purple-500/40',
+                textColor: 'text-purple-400',
+                description: '영문/숫자 1글자 표현의 최소 단위, 주소 지정의 기본 단위'
+            },
+            {
+                code: 'Word',
+                name: '워드 (Word)',
+                mnemonicKey: '워드',
+                phrasePart: '워드',
+                level: 4,
+                sizeInfo: 'CPU에 따라 다름 (Half:2B, Full:4B, Double:8B)',
+                icon: 'fa-microchip',
+                color: 'purple',
+                bgGradient: 'from-purple-400/20 to-purple-600/10',
+                borderColor: 'border-purple-400/40',
+                textColor: 'text-purple-300',
+                description: 'CPU가 한 번의 명령으로 처리할 수 있는 데이터의 단위'
+            },
+            {
+                code: 'Field',
+                name: '필드 (Field / Item)',
+                mnemonicKey: '필',
+                phrasePart: '필러',
+                level: 5,
+                sizeInfo: '여러 Byte / Word의 집합',
+                icon: 'fa-table-columns',
+                color: 'indigo',
+                bgGradient: 'from-indigo-500/20 to-indigo-700/10',
+                borderColor: 'border-indigo-500/40',
+                textColor: 'text-indigo-400',
+                description: '의미 있는 정보를 표현하는 가장 작은 단위 (데이터베이스의 열/속성)'
+            },
+            {
+                code: 'Record',
+                name: '레코드 (Record)',
+                mnemonicKey: '레',
+                phrasePart: '러(레) 맞고',
+                level: 6,
+                sizeInfo: '여러 Field의 집합',
+                icon: 'fa-id-card',
+                color: 'indigo',
+                bgGradient: 'from-indigo-400/20 to-indigo-600/10',
+                borderColor: 'border-indigo-400/40',
+                textColor: 'text-indigo-300',
+                description: '하나의 개체에 대한 연관된 필드들의 모음 (데이터베이스의 행/튜플)'
+            },
+            {
+                code: 'File',
+                name: '파일 (File)',
+                mnemonicKey: '파',
+                phrasePart: '파운데이티션',
+                level: 7,
+                sizeInfo: '여러 Record의 집합',
+                icon: 'fa-file-code',
+                color: 'emerald',
+                bgGradient: 'from-emerald-500/20 to-emerald-700/10',
+                borderColor: 'border-emerald-500/40',
+                textColor: 'text-emerald-400',
+                description: '프로그램 구성이나 처리에 목적을 둔 레코드들의 집합'
+            },
+            {
+                code: 'Database',
+                name: '데이터베이스 (Database)',
+                mnemonicKey: '데',
+                phrasePart: '파운데이티션',
+                level: 8,
+                sizeInfo: '여러 File의 집합',
+                icon: 'fa-database',
+                color: 'emerald',
+                bgGradient: 'from-emerald-400/20 to-emerald-600/10',
+                borderColor: 'border-emerald-400/40',
+                textColor: 'text-emerald-300',
+                description: '중복을 최소화하고 여러 응용 시스템이 공유하는 파일들의 통합 집합'
+            }
+        ];
+
+        function renderCards() {
+            const container = document.getElementById('tab-cards');
+            container.innerHTML = '';
+
+            dataUnits.forEach((unit) => {
+                const card = document.createElement('div');
+                card.id = `card-${unit.code}`;
+                card.className = `glass-card bg-gradient-to-br ${unit.bgGradient} border ${unit.borderColor} p-5 rounded-2xl transition-all duration-300 hover:-translate-y-1 relative overflow-hidden flex flex-col justify-between`;
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex justify-between items-start mb-3">
+                            <span class="px-2.5 py-1 bg-slate-900/80 rounded-full text-xs font-bold ${unit.textColor} border border-slate-700">
+                                암기 키: <span class="text-white">${unit.mnemonicKey}</span>
+                            </span>
+                            <i class="fa-solid ${unit.icon} text-2xl ${unit.textColor}"></i>
+                        </div>
+                        <h3 class="text-xl font-black text-white mb-1">${unit.name}</h3>
+                        <div class="text-xs font-semibold text-gray-300 mb-3"><i class="fa-solid fa-ruler"></i> 크기: ${unit.sizeInfo}</div>
+                    </div>
+                    <div class="bg-slate-900/70 p-3 rounded-xl border border-slate-800 text-xs text-gray-300 leading-relaxed">
+                        ${unit.description}
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function renderHierarchy() {
+            const container = document.getElementById('hierarchy-container');
+            container.innerHTML = '';
+
+            // Render from Database (top) down to Bit (bottom) or vice versa
+            dataUnits.forEach((unit, idx) => {
+                const item = document.createElement('div');
+                item.className = `step-node bg-slate-900/80 p-4 rounded-xl border ${unit.borderColor} flex items-center justify-between gap-4 cursor-pointer hover:bg-slate-800/80`;
+                item.onclick = () => highlightUnit(unit.code);
+
+                item.innerHTML = `
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center font-bold text-xs ${unit.textColor} border border-slate-700">
+                            L${unit.level}
+                        </div>
+                        <div>
+                            <div class="text-sm font-bold text-white flex items-center gap-2">
+                                ${unit.name}
+                                <span class="text-[11px] font-normal text-gray-400">(${unit.sizeInfo})</span>
+                            </div>
+                            <div class="text-xs text-gray-400">${unit.description}</div>
+                        </div>
+                    </div>
+                    <i class="fa-solid fa-chevron-right text-xs text-gray-500"></i>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function highlightUnit(code) {
+            switchTab('cards');
+            const target = document.getElementById(`card-${code}`);
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                target.classList.add('ring-4', 'ring-pink-400', 'scale-105');
+                setTimeout(() => {
+                    target.classList.remove('ring-4', 'ring-pink-400', 'scale-105');
+                }, 1500);
+            }
+        }
+
+        function switchTab(tabName) {
+            ['cards', 'hierarchy', 'quiz'].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.add('hidden');
+                const btn = document.getElementById(`tab-${t}-btn`);
+                btn.classList.remove('border-pink-500', 'text-pink-400');
+                btn.classList.add('border-transparent', 'text-gray-400');
+            });
+
+            document.getElementById(`tab-${tabName}`).classList.remove('hidden');
+            const activeBtn = document.getElementById(`tab-${tabName}-btn`);
+            activeBtn.classList.remove('border-transparent', 'text-gray-400');
+            activeBtn.classList.add('border-pink-500', 'text-pink-400');
+        }
+
+        let quizQuestions = [];
+        let currentQuizIndex = 0;
+        let score = 0;
+
+        function startQuiz() {
+            document.getElementById('quiz-start-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.add('hidden');
+            document.getElementById('quiz-play-screen').classList.remove('hidden');
+
+            // Generate Quiz Questions
+            quizQuestions = [...dataUnits]
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 5)
+                .map(unit => {
+                    const type = Math.random() > 0.5 ? 'mnemonic' : 'hierarchy';
+                    let questionText = '';
+                    let correctAnswer = '';
+                    let options = [];
+
+                    if (type === 'mnemonic') {
+                        questionText = `암기 키 단어 "<span class="text-pink-300 font-bold">${unit.mnemonicKey}</span>"에 해당하는 자료 표현 단위는?`;
+                        correctAnswer = unit.name;
+                        options = [unit.name];
+                        while(options.length < 4) {
+                            const rand = dataUnits[Math.floor(Math.random() * dataUnits.length)].name;
+                            if (!options.includes(rand)) options.push(rand);
+                        }
+                    } else {
+                        questionText = `<span class="text-purple-300 font-bold">${unit.name}</span>의 특징으로 올바른 설명은?`;
+                        correctAnswer = unit.description;
+                        options = [unit.description];
+                        while(options.length < 4) {
+                            const rand = dataUnits[Math.floor(Math.random() * dataUnits.length)].description;
+                            if (!options.includes(rand)) options.push(rand);
+                        }
+                    }
+
+                    return {
+                        question: questionText,
+                        answer: correctAnswer,
+                        options: options.sort(() => 0.5 - Math.random())
+                    };
+                });
+
+            currentQuizIndex = 0;
+            score = 0;
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const q = quizQuestions[currentQuizIndex];
+            document.getElementById('quiz-current-num').innerText = currentQuizIndex + 1;
+            document.getElementById('quiz-score').innerText = score;
+            document.getElementById('quiz-question-text').innerHTML = q.question;
+
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+
+            q.options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'w-full py-3 px-4 bg-slate-800 hover:bg-pink-600 text-white font-semibold rounded-xl border border-slate-700 transition-all text-xs md:text-sm text-left';
+                btn.innerText = opt;
+                btn.onclick = () => checkAnswer(opt, q.answer);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected, correct) {
+            if (selected === correct) {
+                score += 20;
+            }
+
+            currentQuizIndex++;
+            if (currentQuizIndex < quizQuestions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        }
+
+        function showResult() {
+            document.getElementById('quiz-play-screen').classList.add('hidden');
+            document.getElementById('quiz-result-screen').classList.remove('hidden');
+            document.getElementById('quiz-final-score').innerText = score;
+        }
+
+        // Window Load Event
+        window.onload = function() {
+            renderCards();
+            renderHierarchy();
+        };
+    </script>
+</body>
+</html>

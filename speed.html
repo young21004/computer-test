@@ -1,0 +1,727 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>컴퓨터 연산속도 완벽 암기: 밀지마나피나펜다아 ⚡</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700;800;900&display=swap');
+        body {
+            font-family: 'Pretendard', sans-serif;
+            user-select: none;
+        }
+        .perspective-1000 {
+            perspective: 1000px;
+        }
+        .transform-style-3d {
+            transform-style: preserve-3d;
+        }
+        .backface-hidden {
+            backface-visibility: hidden;
+        }
+        .rotate-y-180 {
+            transform: rotateY(180deg);
+        }
+        .glass-panel {
+            background: rgba(15, 23, 42, 0.75);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .glow-active {
+            box-shadow: 0 0 25px rgba(244, 63, 94, 0.4);
+        }
+        @keyframes pulse-ring {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            50% { transform: scale(1.05); opacity: 1; }
+            100% { transform: scale(0.95); opacity: 0.8; }
+        }
+        .animate-pulse-ring {
+            animation: pulse-ring 2s infinite ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen pb-20 selection:bg-rose-500 selection:text-white">
+
+    <!-- Sticky Navigation Header -->
+    <header class="sticky top-0 z-50 glass-panel border-b border-slate-800/80">
+        <div class="max-w-6xl mx-auto px-4 py-3.5 flex flex-col sm:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-rose-500 via-amber-500 to-sky-500 flex items-center justify-center text-slate-950 font-black text-xl shadow-lg shadow-rose-500/20">
+                    ⏱️
+                </div>
+                <div>
+                    <h1 class="text-xl font-black bg-gradient-to-r from-rose-400 via-amber-300 to-sky-300 bg-clip-text text-transparent">
+                        연산속도 암기킹: 밀지마나피나펜다아
+                    </h1>
+                    
+                </div>
+            </div>
+            <nav class="flex gap-1.5 text-xs font-bold">
+                <a href="#mnemonic-story" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-rose-300 transition border border-slate-800">🚨 스토리</a>
+                <a href="#flashcard-section" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-amber-300 transition border border-slate-800">🎴 카드리뷰</a>
+                <a href="#scale-section" class="px-3 py-1.5 rounded-xl bg-slate-900/80 hover:bg-slate-800 text-sky-300 transition border border-slate-800">🔬 속도체감</a>
+                <a href="#game-section" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-extrabold shadow-md hover:brightness-110 transition">🎮 챌린지</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="max-w-6xl mx-auto px-4 mt-8 space-y-12">
+
+        <!-- Mnemonic Hero Story & Rhythm Player -->
+        <section id="mnemonic-story" class="scroll-mt-24 space-y-6">
+            <div class="relative overflow-hidden glass-panel rounded-3xl p-6 md:p-8 border border-rose-500/20 glow-active">
+                <div class="absolute -top-24 -right-24 w-72 h-72 bg-rose-500/10 rounded-full blur-3xl pointer-events-none"></div>
+                
+                <div class="flex flex-col lg:flex-row gap-8 items-center justify-between relative z-10">
+                    <div class="space-y-4 text-center lg:text-left max-w-xl">
+                        <span class="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-rose-500/10 text-rose-400 text-xs font-black border border-rose-500/30">
+                            <i class="fa-solid fa-fire text-amber-400"></i> 세기의 연상 암기 공식
+                        </span>
+                        <h2 class="text-3xl md:text-4xl font-black text-white leading-tight">
+                            "밀지 마! 나 피 나! 펜다 아파!"
+                        </h2>
+                        <p></p>
+                        <p></p>
+                        <!-- Story Breakdown Badges -->
+                        <div class="flex flex-wrap justify-center lg:justify-start gap-2 pt-2">
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                🚑 <b class="text-rose-400">밀</b>지 (밀리초)
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                ✋ <b class="text-amber-400">마</b>! (마이크로초)
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                🩸 <b class="text-emerald-400">나</b> (나노초)
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                💉 <b class="text-sky-400">피</b>나! (피코초)
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                ✏️ <b class="text-purple-400">펜</b>다 (펨토초)
+                            </span>
+                            <span class="px-3 py-1.5 rounded-xl bg-slate-900/90 border border-slate-700 text-xs font-bold text-slate-200">
+                                😭 <b class="text-fuchsia-400">아</b>파! (아토초)
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Audio Beats Interactive Widget -->
+                    <div class="w-full lg:w-auto bg-slate-950/80 border border-slate-800 p-6 rounded-2xl text-center space-y-4 shrink-0 max-w-sm">
+                        <div class="text-xs font-bold text-slate-400 uppercase tracking-widest">Interactive Rhythm Player</div>
+                        <div class="text-4xl my-2 animate-pulse-ring inline-block" id="rhythmEmoji">🎵</div>
+                        <div class="text-base font-black text-amber-300 h-8 flex items-center justify-center" id="rhythmLyric">
+                            버튼을 눌러 리듬감을 느껴보세요!
+                        </div>
+                        <button onclick="playMnemonicSong()" class="w-full py-3 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-slate-950 font-black rounded-xl shadow-lg transition flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-circle-play text-lg"></i> 리듬 재생하기
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Breakdown Grid / Flashcard Section -->
+        <section id="flashcard-section" class="scroll-mt-24 space-y-6">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-2">
+                <div>
+                    <span class="text-xs font-bold text-rose-400 uppercase tracking-widest bg-rose-500/10 px-3 py-1 rounded-full border border-rose-500/20">Speed Breakdown</span>
+                    <h2 class="text-2xl md:text-3xl font-black text-white mt-1">🎴 속도 단위 카드 (클릭하여 뒤집기)</h2>
+                </div>
+                <p class="text-xs text-slate-400">카드를 누르면 지수표현($10^{-N}$)과 정확한 분수가 나타납니다.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5" id="cardGrid">
+                <!-- Dynamically generated by JS -->
+            </div>
+        </section>
+
+        <!-- Time Scale Visualizer -->
+        <section id="scale-section" class="scroll-mt-24 glass-panel rounded-3xl p-6 md:p-8 space-y-6 border border-slate-800">
+            <div class="text-center max-w-2xl mx-auto space-y-2">
+                <span class="px-3 py-1 bg-sky-500/10 text-sky-400 text-xs font-bold rounded-full border border-sky-500/20 uppercase tracking-widest">Scale Visualizer</span>
+                <h2 class="text-2xl md:text-3xl font-black text-white">🔬 연산속도는 얼마나 정밀할까?</h2>
+                <p class="text-slate-400 text-sm">슬라이더를 조작하여 각 속도 단위가 자연계에서 의미하는 순간을 확인해보세요.</p>
+            </div>
+
+            <div class="bg-slate-950/80 p-6 rounded-2xl border border-slate-800 space-y-6 max-w-3xl mx-auto">
+                <div class="flex justify-between items-end pb-4 border-b border-slate-800">
+                    <div>
+                        <span id="scaleSyllable" class="text-xs font-black text-rose-400 bg-rose-500/10 px-2.5 py-1 rounded-md border border-rose-500/30">밀지마</span>
+                        <h3 id="scaleName" class="text-2xl md:text-3xl font-black text-white mt-1">밀리초 (Millisecond)</h3>
+                    </div>
+                    <div class="text-right">
+                        <div id="scaleExp" class="text-2xl font-mono font-black text-amber-400">10⁻³ 초</div>
+                        <div id="scaleFraction" class="text-xs text-slate-400">1 / 1,000 초</div>
+                    </div>
+                </div>
+
+                <!-- Range Slider -->
+                <div class="space-y-3">
+                    <input type="range" id="scaleSlider" min="0" max="5" value="0" step="1" 
+                           class="w-full h-3 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-rose-500">
+                    <div class="flex justify-between text-xs font-black text-slate-400 px-1">
+                        <span>밀리(ms)</span>
+                        <span>마이크로(μs)</span>
+                        <span>나노(ns)</span>
+                        <span>피코(ps)</span>
+                        <span>펨토(fs)</span>
+                        <span>아토(as)</span>
+                    </div>
+                </div>
+
+                <!-- Real World Analogy Box -->
+                <div class="bg-slate-900/90 p-5 rounded-2xl border border-slate-800 flex items-start gap-4">
+                    <div id="scaleIcon" class="w-14 h-14 rounded-2xl bg-rose-500/10 border border-rose-500/30 flex items-center justify-center text-3xl shrink-0">
+                        🐝
+                    </div>
+                    <div class="space-y-1">
+                        <h4 id="scaleAnalogyTitle" class="text-base font-bold text-amber-300">실생활 체감 비유</h4>
+                        <p id="scaleAnalogyDesc" class="text-xs text-slate-300 leading-relaxed">
+                            설명이 들어갈 자리입니다.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Practice Mini-Games -->
+        <section id="game-section" class="scroll-mt-24 space-y-6">
+            <div class="text-center space-y-2">
+                <span class="px-3 py-1 bg-amber-500/10 text-amber-400 text-xs font-bold rounded-full border border-amber-500/20 uppercase tracking-widest">Mini Games</span>
+                <h2 class="text-3xl font-black text-white">🎮 완벽 암기 테스트 실전 미니게임</h2>
+                <p class="text-slate-400 text-sm">2가지 트레이닝 모드로 연산속도 단위를 머릿속에 각인하세요!</p>
+            </div>
+
+            <!-- Tab Buttons -->
+            <div class="flex justify-center gap-3">
+                <button id="tabBtnOrder" onclick="switchGameTab('order')" class="px-6 py-2.5 rounded-2xl font-bold text-sm bg-rose-500 text-slate-950 shadow-lg transition">
+                    🧩 1. 순서 맞추기 게임
+                </button>
+                <button id="tabBtnQuiz" onclick="switchGameTab('quiz')" class="px-6 py-2.5 rounded-2xl font-bold text-sm bg-slate-800 text-slate-300 hover:bg-slate-700 transition">
+                    ⚡ 2. 스피드 타임어택 퀴즈
+                </button>
+            </div>
+
+            <!-- Game Container 1: Ordering Game -->
+            <div id="gameOrderContainer" class="glass-panel rounded-3xl p-6 md:p-8 space-y-6 max-w-3xl mx-auto border border-slate-800">
+                <div class="text-center space-y-2">
+                    <h3 class="text-xl font-black text-white">"밀-마-나-피-펨-아" 순서대로 나열하세요!</h3>
+                    <p class="text-xs text-slate-400">느린 연산속도($10^{-3}$)부터 가장 빠른 속도($10^{-18}$) 순으로 선택하세요.</p>
+                </div>
+
+                <div id="orderSlots" class="grid grid-cols-6 gap-2 bg-slate-950 p-4 rounded-2xl border border-slate-800 min-h-[70px] items-center">
+                    <!-- Selected slots go here -->
+                </div>
+
+                <div id="orderChoices" class="flex flex-wrap justify-center gap-2 pt-2">
+                    <!-- Shuffled choices go here -->
+                </div>
+
+                <div class="flex justify-center gap-3 pt-4">
+                    <button onclick="resetOrderGame()" class="px-5 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold rounded-xl transition">
+                        다시 시도 🔄
+                    </button>
+                    <button onclick="checkOrderAnswer()" class="px-8 py-2.5 bg-gradient-to-r from-rose-500 to-amber-500 hover:from-rose-600 hover:to-amber-600 text-slate-950 font-black text-sm rounded-xl shadow-lg transition">
+                        정답 확인 ✨
+                    </button>
+                </div>
+            </div>
+
+            <!-- Game Container 2: Speed Quiz Game -->
+            <div id="gameQuizContainer" class="glass-panel rounded-3xl p-6 md:p-8 space-y-6 max-w-3xl mx-auto border border-slate-800 hidden">
+                <div class="flex justify-between items-center bg-slate-950 px-5 py-3 rounded-2xl border border-slate-800">
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase block">SCORE</span>
+                        <span id="quizScore" class="text-xl font-mono font-black text-amber-400">0</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase block">COMBO</span>
+                        <span id="quizCombo" class="text-xl font-mono font-black text-rose-400">0x</span>
+                    </div>
+                    <div>
+                        <span class="text-[10px] text-slate-500 font-bold uppercase block">TIME</span>
+                        <span id="quizTimer" class="text-xl font-mono font-black text-sky-400">15s</span>
+                    </div>
+                </div>
+
+                <div id="quizStartScreen" class="text-center py-8 space-y-5">
+                    <div class="text-5xl animate-bounce">⚡</div>
+                    <h3 class="text-2xl font-black text-white">15초 스피드 암기 타임어택</h3>
+                    <p class="text-xs text-slate-400 max-w-md mx-auto">
+                        제한 시간 동안 빠르게 연산속도 단위, 지수, 암기음절을 맞추세요! 콤보가 늘어날수록 높은 점수를 얻습니다.
+                    </p>
+                    <button onclick="startSpeedQuiz()" class="px-8 py-3 bg-gradient-to-r from-rose-500 to-amber-500 text-slate-950 font-black text-base rounded-2xl shadow-xl hover:brightness-110 transition">
+                        퀴즈 시작 🚀
+                    </button>
+                </div>
+
+                <div id="quizPlayScreen" class="space-y-6 hidden">
+                    <div class="bg-slate-950 p-6 rounded-2xl border border-slate-800 text-center min-h-[100px] flex items-center justify-center">
+                        <h4 id="quizQuestionText" class="text-lg md:text-xl font-black text-white leading-relaxed">
+                            질문 텍스트
+                        </h4>
+                    </div>
+
+                    <div id="quizOptionsGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                        <!-- Options generated by JS -->
+                    </div>
+                </div>
+
+                <div id="quizEndScreen" class="text-center py-8 space-y-5 hidden">
+                    <div id="quizEndEmoji" class="text-6xl">🏆</div>
+                    <h3 id="quizEndTitle" class="text-2xl font-black text-amber-300">시간 종료!</h3>
+                    <p class="text-sm text-slate-300">최종 점수: <span id="quizFinalScore" class="font-bold text-amber-400 text-xl">0</span>점</p>
+                    <button onclick="startSpeedQuiz()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-xl transition">
+                        다시 도전하기 🔄
+                    </button>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Application Logic Script -->
+    <script>
+        // Core Data Definition for Computer Speed Units
+        const speedUnitsData = [
+            {
+                syllable: "밀",
+                storyWord: "밀지",
+                unitName: "밀리초",
+                unitEn: "Millisecond (ms)",
+                exponent: "10⁻³",
+                exponentNum: -3,
+                fraction: "1 / 1,000 초",
+                color: "rose",
+                icon: "fa-ambulance",
+                analogyTitle: "🐝 꿀벌의 날갯짓 1회",
+                analogyDesc: "1/1,000초는 꿀벌이 날개를 한 번 치는 시간입니다. 1세대 컴퓨터의 연산속도입니다."
+            },
+            {
+                syllable: "마",
+                storyWord: "마!",
+                unitName: "마이크로초",
+                unitEn: "Microsecond (μs)",
+                exponent: "10⁻⁶",
+                exponentNum: -6,
+                fraction: "1 / 1,000,000 초",
+                color: "amber",
+                icon: "fa-camera-retro",
+                analogyTitle: "📸 고속 스트로보 반짝임",
+                analogyDesc: "1/100만 초는 초고속 카메라 스트로보가 순간적으로 발광하는 미세한 시간입니다."
+            },
+            {
+                syllable: "나",
+                storyWord: "나",
+                unitName: "나노초",
+                unitEn: "Nanosecond (ns)",
+                exponent: "10⁻⁹",
+                exponentNum: -9,
+                fraction: "1 / 1,000,000,000 초 (10억분의 1초)",
+                color: "emerald",
+                icon: "fa-bolt",
+                analogyTitle: "📏 빛이 30cm 이동하는 시간",
+                analogyDesc: "우주에서 가장 빠른 빛조차 1나노초 동안에는 딱 30cm(자 한 개 길이)밖에 못 갑니다."
+            },
+            {
+                syllable: "피",
+                storyWord: "피나!",
+                unitName: "피코초",
+                unitEn: "Picosecond (ps)",
+                exponent: "10⁻¹²",
+                exponentNum: -12,
+                fraction: "1 / 1,000,000,000,000 초 (1조분의 1초)",
+                color: "sky",
+                icon: "fa-microchip",
+                analogyTitle: "💻 현대 트랜지스터 스위칭",
+                analogyDesc: "고성능 CPU 반도체 내부의 반도체 소자가 켜지고 꺼지는 전기적 동작 시간입니다."
+            },
+            {
+                syllable: "펜",
+                storyWord: "펜다",
+                unitName: "펨토초",
+                unitEn: "Femtosecond (fs)",
+                exponent: "10⁻¹⁵",
+                exponentNum: -15,
+                fraction: "1 / 1,000,000,000,000,000 초 (1,000조분의 1초)",
+                color: "purple",
+                icon: "fa-flask",
+                analogyTitle: "🧪 화학 반응 분자결합 분해",
+                analogyDesc: "화학 반응 중 분자 사이의 결합이 생기거나 끊어지는 극초단 레이저 측정 단위입니다."
+            },
+            {
+                syllable: "아",
+                storyWord: "아파!",
+                unitName: "아토초",
+                unitEn: "Attosecond (as)",
+                exponent: "10⁻¹⁸",
+                exponentNum: -18,
+                fraction: "1 / 1,000,000,000,000,000,000 초 (100경분의 1초)",
+                color: "fuchsia",
+                icon: "fa-atom",
+                analogyTitle: "🌌 원자 내부 전자 운동",
+                analogyDesc: "2023 노벨물리학상 연구 분야! 원자 내부에서 전자가 이동하는 순간을 포착하는 최고 정밀 시간입니다."
+            }
+        ];
+
+        // --- Render Flashcards ---
+        function renderCards() {
+            const container = document.getElementById('cardGrid');
+            container.innerHTML = '';
+
+            speedUnitsData.forEach((item) => {
+                const html = `
+                    <div class="perspective-1000 h-60 cursor-pointer group" onclick="flipCard(this)">
+                        <div class="card-inner relative w-full h-full transform-style-3d transition-transform duration-500 rounded-2xl">
+                            <!-- Front Side -->
+                            <div class="absolute inset-0 bg-slate-900 border-2 border-${item.color}-500/40 rounded-2xl p-5 flex flex-col justify-between items-center text-center backface-hidden group-hover:border-${item.color}-400 transition">
+                                <div class="flex justify-between items-center w-full">
+                                    <span class="text-xs font-black text-${item.color}-400 bg-${item.color}-500/10 px-2.5 py-1 rounded-full border border-${item.color}-500/30">
+                                        음절: [${item.syllable}]
+                                    </span>
+                                    <span class="text-xs font-mono font-bold text-slate-400">${item.unitEn.split(' ')[1]}</span>
+                                </div>
+                                <div class="my-auto">
+                                    <i class="fa-solid ${item.icon} text-4xl text-${item.color}-400 mb-2"></i>
+                                    <h3 class="text-2xl font-black text-white">${item.unitName}</h3>
+                                    <p class="text-xl font-mono font-black text-amber-300 mt-1">${item.exponent} 초</p>
+                                </div>
+                                <span class="text-[11px] text-slate-400 bg-slate-950 px-3 py-1 rounded-full border border-slate-800">
+                                    클릭하여 암기 스토리 확인 🔄
+                                </span>
+                            </div>
+
+                            <!-- Back Side -->
+                            <div class="absolute inset-0 bg-slate-900 border-2 border-${item.color}-400 rounded-2xl p-5 flex flex-col justify-between items-center text-center rotate-y-180 backface-hidden">
+                                <div class="w-full text-left">
+                                    <span class="text-[10px] font-bold text-slate-500 uppercase">상세 가이드</span>
+                                </div>
+                                <div class="space-y-2 text-center my-auto">
+                                    <div class="text-amber-300 text-sm font-bold bg-amber-500/10 p-2 rounded-xl border border-amber-500/20">
+                                        🗣️ 스토리 단어: "${item.storyWord}"
+                                    </div>
+                                    <div class="text-xs text-slate-300 font-mono">
+                                        정확한 수치: ${item.fraction}
+                                    </div>
+                                </div>
+                                <span class="text-[10px] text-slate-500">돌려보기 🔄</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        function flipCard(elem) {
+            const inner = elem.querySelector('.card-inner');
+            inner.classList.toggle('rotate-y-180');
+            playBeep(450, 0.04);
+        }
+
+        // --- Scale Slider Event ---
+        const scaleSlider = document.getElementById('scaleSlider');
+        scaleSlider.addEventListener('input', (e) => {
+            const index = parseInt(e.target.value);
+            const data = speedUnitsData[index];
+
+            document.getElementById('scaleSyllable').innerText = `공식: ${data.syllable} (${data.storyWord})`;
+            document.getElementById('scaleName').innerText = `${data.unitName} (${data.unitEn})`;
+            document.getElementById('scaleExp').innerText = `${data.exponent} 초`;
+            document.getElementById('scaleFraction').innerText = data.fraction;
+            document.getElementById('scaleAnalogyTitle').innerText = data.analogyTitle;
+            document.getElementById('scaleAnalogyDesc').innerText = data.analogyDesc;
+            document.getElementById('scaleIcon').innerHTML = `<i class="fa-solid ${data.icon} text-${data.color}-400"></i>`;
+
+            playBeep(300 + index * 80, 0.03);
+        });
+
+        // --- Web Audio API Audio Synthesizer ---
+        let audioCtx = null;
+        function getAudioContext() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            return audioCtx;
+        }
+
+        function playBeep(freq, duration) {
+            try {
+                const ctx = getAudioContext();
+                if (!ctx) return;
+                const osc = ctx.createOscillator();
+                const gain = ctx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                gain.gain.setValueAtTime(0.08, ctx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + duration);
+                osc.connect(gain);
+                gain.connect(ctx.destination);
+                osc.start();
+                osc.stop(ctx.currentTime + duration);
+            } catch (e) {}
+        }
+
+        // Mnemonic Song Rhythm Player
+        function playMnemonicSong() {
+            const lyrics = [
+                { text: "밀지 마!", emoji: "🚑", freq: 400 },
+                { text: "나 피 나!", emoji: "🩸", freq: 700 },
+                { text: "펜다 아파!", emoji: "✏️", freq: 1000 },
+                { text: "밀! 마! 나! 피! 펨! 아!", emoji: "🔥", freq: 1300 }
+            ];
+
+            let step = 0;
+            const lyricElem = document.getElementById('rhythmLyric');
+            const emojiElem = document.getElementById('rhythmEmoji');
+
+            const interval = setInterval(() => {
+                if (step >= lyrics.length) {
+                    clearInterval(interval);
+                    lyricElem.innerText = "완벽하게 익히셨나요? 한번 더!";
+                    emojiElem.innerText = "🎵";
+                    return;
+                }
+                const current = lyrics[step];
+                lyricElem.innerText = current.text;
+                emojiElem.innerText = current.emoji;
+                playBeep(current.freq, 0.2);
+                step++;
+            }, 700);
+        }
+
+        // --- Game 1: Ordering Game ---
+        let selectedOrder = [];
+        let shuffledChoices = [];
+
+        function initOrderGame() {
+            selectedOrder = [];
+            shuffledChoices = [...speedUnitsData].sort(() => Math.random() - 0.5);
+            renderOrderSlots();
+            renderOrderChoices();
+        }
+
+        function renderOrderSlots() {
+            const slotsContainer = document.getElementById('orderSlots');
+            slotsContainer.innerHTML = '';
+
+            for (let i = 0; i < 6; i++) {
+                if (i < selectedOrder.length) {
+                    const item = selectedOrder[i];
+                    slotsContainer.innerHTML += `
+                        <button onclick="deselectOrder(${i})" class="bg-rose-500 text-slate-950 font-black p-2.5 rounded-xl text-center shadow-md animate-bounce">
+                            <span class="text-xs block text-slate-900">${i+1}번</span>
+                            <span class="text-base">${item.syllable} (${item.unitName})</span>
+                        </button>
+                    `;
+                } else {
+                    slotsContainer.innerHTML += `
+                        <div class="border-2 border-dashed border-slate-800 p-2.5 rounded-xl text-center text-slate-600 font-bold text-xs">
+                            ${i+1}번째
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        function renderOrderChoices() {
+            const choicesContainer = document.getElementById('orderChoices');
+            choicesContainer.innerHTML = '';
+
+            shuffledChoices.forEach((item) => {
+                const isSelected = selectedOrder.some(s => s.syllable === item.syllable);
+                if (!isSelected) {
+                    choicesContainer.innerHTML += `
+                        <button onclick="selectOrder('${item.syllable}')" class="px-4 py-2.5 bg-slate-900 hover:bg-slate-800 border border-slate-700 rounded-xl font-bold text-sm text-slate-200 transition">
+                            [${item.syllable}] ${item.unitName}
+                        </button>
+                    `;
+                }
+            });
+        }
+
+        function selectOrder(syllable) {
+            if (selectedOrder.length >= 6) return;
+            const found = speedUnitsData.find(d => d.syllable === syllable);
+            if (found) {
+                selectedOrder.push(found);
+                playBeep(500 + selectedOrder.length * 50, 0.05);
+                renderOrderSlots();
+                renderOrderChoices();
+            }
+        }
+
+        function deselectOrder(index) {
+            selectedOrder.splice(index, 1);
+            playBeep(300, 0.05);
+            renderOrderSlots();
+            renderOrderChoices();
+        }
+
+        function resetOrderGame() {
+            initOrderGame();
+        }
+
+        function checkOrderAnswer() {
+            if (selectedOrder.length < 6) {
+                alert("6개 연산속도 단위를 모두 선택해주세요!");
+                return;
+            }
+
+            const isCorrect = selectedOrder.every((item, idx) => item.syllable === speedUnitsData[idx].syllable);
+
+            if (isCorrect) {
+                playBeep(600, 0.1);
+                setTimeout(() => playBeep(900, 0.2), 100);
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+                }
+                alert("🎉 완벽합니다! '밀-마-나-피-펜-아' 순서를 완벽히 맞히셨습니다!");
+            } else {
+                playBeep(200, 0.3);
+                alert("❌ 순서가 틀렸습니다. 공식: '밀(밀리)-마(마이크로)-나(나노)-피(피코)-펜(펨토)-아(아토)'를 기억하세요!");
+            }
+        }
+
+        // --- Game 2: Speed Quiz Time Attack ---
+        let quizScore = 0;
+        let quizCombo = 0;
+        let quizTimer = 15;
+        let quizTimerInterval = null;
+        let currentQuizData = null;
+
+        function startSpeedQuiz() {
+            quizScore = 0;
+            quizCombo = 0;
+            quizTimer = 15;
+
+            document.getElementById('quizScore').innerText = quizScore;
+            document.getElementById('quizCombo').innerText = `${quizCombo}x`;
+            document.getElementById('quizTimer').innerText = `${quizTimer}s`;
+
+            document.getElementById('quizStartScreen').classList.add('hidden');
+            document.getElementById('quizEndScreen').classList.add('hidden');
+            document.getElementById('quizPlayScreen').classList.remove('hidden');
+
+            if (quizTimerInterval) clearInterval(quizTimerInterval);
+            quizTimerInterval = setInterval(() => {
+                quizTimer--;
+                document.getElementById('quizTimer').innerText = `${quizTimer}s`;
+                if (quizTimer <= 0) {
+                    endSpeedQuiz();
+                }
+            }, 1000);
+
+            nextQuizQuestion();
+        }
+
+        function nextQuizQuestion() {
+            const target = speedUnitsData[Math.floor(Math.random() * speedUnitsData.length)];
+            const qTypes = ['exp', 'name', 'syllable'];
+            const qType = qTypes[Math.floor(Math.random() * qTypes.length)];
+
+            let questionText = "";
+            let correctAnswer = "";
+
+            if (qType === 'exp') {
+                questionText = `'${target.unitName}'의 지수 표현($10^{-N}$)은 무엇일까요?`;
+                correctAnswer = `${target.exponent} 초`;
+            } else if (qType === 'name') {
+                questionText = `지수가 '${target.exponent} 초'인 연산속도 단위의 이름은?`;
+                correctAnswer = target.unitName;
+            } else {
+                questionText = `암기 공식 '밀지마나피나펜다아'에서 '${target.syllable}'에 해당하는 단위는?`;
+                correctAnswer = target.unitName;
+            }
+
+            currentQuizData = { target, correctAnswer };
+            document.getElementById('quizQuestionText').innerText = questionText;
+
+            // Generate choices
+            let choices = [correctAnswer];
+            while (choices.length < 4) {
+                const randomItem = speedUnitsData[Math.floor(Math.random() * speedUnitsData.length)];
+                let choiceVal = "";
+                if (qType === 'exp') choiceVal = `${randomItem.exponent} 초`;
+                else choiceVal = randomItem.unitName;
+
+                if (!choices.includes(choiceVal)) {
+                    choices.push(choiceVal);
+                }
+            }
+
+            choices.sort(() => Math.random() - 0.5);
+
+            const grid = document.getElementById('quizOptionsGrid');
+            grid.innerHTML = '';
+            choices.forEach((c) => {
+                grid.innerHTML += `
+                    <button onclick="handleQuizAnswer('${c}')" class="p-4 bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-rose-400/50 rounded-xl font-bold text-sm text-slate-100 transition text-left flex justify-between items-center">
+                        <span>${c}</span>
+                        <i class="fa-solid fa-chevron-right text-xs text-slate-600"></i>
+                    </button>
+                `;
+            });
+        }
+
+        function handleQuizAnswer(selected) {
+            if (selected === currentQuizData.correctAnswer) {
+                quizCombo++;
+                quizScore += 100 + (quizCombo - 1) * 20;
+                playBeep(650, 0.08);
+            } else {
+                quizCombo = 0;
+                playBeep(200, 0.2);
+            }
+
+            document.getElementById('quizScore').innerText = quizScore;
+            document.getElementById('quizCombo').innerText = `${quizCombo}x`;
+            nextQuizQuestion();
+        }
+
+        function endSpeedQuiz() {
+            clearInterval(quizTimerInterval);
+            document.getElementById('quizPlayScreen').classList.add('hidden');
+            document.getElementById('quizEndScreen').classList.remove('hidden');
+
+            document.getElementById('quizFinalScore').innerText = quizScore;
+
+            if (quizScore >= 800) {
+                if (typeof confetti === 'function') {
+                    confetti({ particleCount: 120, spread: 80, origin: { y: 0.6 } });
+                }
+            }
+        }
+
+        function switchGameTab(type) {
+            const btnOrder = document.getElementById('tabBtnOrder');
+            const btnQuiz = document.getElementById('tabBtnQuiz');
+            const boxOrder = document.getElementById('gameOrderContainer');
+            const boxQuiz = document.getElementById('gameQuizContainer');
+
+            if (type === 'order') {
+                btnOrder.className = "px-6 py-2.5 rounded-2xl font-bold text-sm bg-rose-500 text-slate-950 shadow-lg transition";
+                btnQuiz.className = "px-6 py-2.5 rounded-2xl font-bold text-sm bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+                boxOrder.classList.remove('hidden');
+                boxQuiz.classList.add('hidden');
+            } else {
+                btnQuiz.className = "px-6 py-2.5 rounded-2xl font-bold text-sm bg-rose-500 text-slate-950 shadow-lg transition";
+                btnOrder.className = "px-6 py-2.5 rounded-2xl font-bold text-sm bg-slate-800 text-slate-300 hover:bg-slate-700 transition";
+                boxQuiz.classList.remove('hidden');
+                boxOrder.classList.add('hidden');
+            }
+        }
+
+        // Initialize on load
+        window.addEventListener('DOMContentLoaded', () => {
+            renderCards();
+            initOrderGame();
+            // Trigger default scale view
+            document.getElementById('scaleSlider').dispatchEvent(new Event('input'));
+        });
+    </script>
+</body>
+</html>
